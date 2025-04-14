@@ -49,7 +49,7 @@ long long enterNumber(int task) {
 		switch(task) {
 			case UNSELECTED: {
 				if (temp == done) {
-					return -1;
+					return done;
 				}
 				if (temp >= addOne && temp <= done) {
 					number = temp;
