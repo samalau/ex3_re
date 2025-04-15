@@ -120,14 +120,14 @@ void express(int focus){
 		case addAll:{
 			printf("No data for brands");
 
-			for(int i=0; i<NUM_OF_BRANDS; i++){
-				for(int j=0; j<; j++){
+			for(int i=0; i<DAYS_IN_YEAR; i++){
+				for(int j=0; j<NUM_OF_BRANDS; j++){
 					for(int k=0; k<NUM_OF_TYPES; k++){
 						printf(" %s");
 					}
 				}
 			}
-			
+
 			printf("Please complete the data\n");
 			return;
 		}
