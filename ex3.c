@@ -115,11 +115,20 @@ int getDay(int latestDay){
 void express(int focus){
 	switch(focus){
 		case addOne:{
-			printf("");
 			return;
 		}
 		case addAll:{
-			printf("");
+			printf("No data for brands");
+
+			for(int i=0; i<NUM_OF_BRANDS; i++){
+				for(int j=0; j<; j++){
+					for(int k=0; k<NUM_OF_TYPES; k++){
+						printf(" %s");
+					}
+				}
+			}
+			
+			printf("Please complete the data\n");
 			return;
 		}
 		case stats:{
