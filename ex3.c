@@ -222,11 +222,11 @@ int main(){
 			}
 			case deltas:
 			{
-				int brand=INITIAL;
-				while(brand<NUM_OF_BRANDS){
+				int brand=NONE;
+				while(++brand<NUM_OF_BRANDS){
 					printf("Brand: %s, Average Delta: %1.6f\n",
 						brands[brand],
-						avgDelta(brand++));
+						avgDelta(brand));
 				}
 			break;
 			}
