@@ -133,130 +133,26 @@ float avgDelta(int brand){
 /********************************************
 misc. mess funcs
 *******************************************/
-void express(int focus){switch(focus){
-		case addOne: return;
-		case addAll: int today = latestDay;
-			printf("No data for brands");
-			if (today==NONE){today=INITIAL;}
-			for(int brand=INITIAL; brand<NUM_OF_BRANDS; brand++){
-				if (cube[today][brand][INITIAL]==NONE) printf(" %s", brands[brand]);
-			} printf("\nPlease complete the data\n"); return;
-		case stats: int day=NONE, totalSum=NONE;
-			if(getLatestDay()==NONE) return;
-			day=inputDay();
-			printf("In day number %d:\n", day);
-			printf("The sales total was %d\n", totalSum);
-			printf("The best sold brand with %d sales was %s\n",
-				mostSales[day][mAMOUNT],
-				brands[mostSales[day][mBRAND]]);
-			printf("The best sold type with %d sales was %s\n",
-				mostType[day][mAMOUNT],
-				types[mostType[day][mBRAND]]
-			); return;
-		case print:{ int brand=NONE;
-			while(brand<NUM_OF_BRANDS){
-				printf("Sales for %s:\n", brands[brand]);
-				if(days[brand]==NONE) continue;
-				displayDay(brand);
-			} return;
-		}
-		case insights: int bBrand=bestBrand(); int bType=bestType(); int bDay=bestDay();
-			printf("The best-selling brand overall is %s: %d\n$",
-				brands[bBrand],
-				sales(bBrand));
-			printf("The best-selling type of car is %s: %d$\n",
-				types[bType],
-				sales(bType));
-			printf("The most profitable day was day number %d: %d$\n",
-				bDay,
-				sales(bDay)
-			); return;
-		case deltas:
-			int brand=INITIAL;
-			while(brand<NUM_OF_BRANDS){
-				printf("Brand: %s, Average Delta: %1.6f\n",
-					brands[brand],
-					avgDelta(brand++));
-			} return;
-		case done: printf("Goodbye!\n"); return;
-		default:{
-			return;
-		}
-	}
-}
-
-// long long inputData(){
-//     int value = NONE;
-//     char confirm = '\0';
-//     do {
-//         printf("%s", prompt);
-//         if (scanf(" %d%c", &value, &confirm) != 2 || confirm != '\n') {
-//             scanf("%*[^\n]");
-//             printf("Invalid\n");  
-//             value=NONE;
-//         }
-//     } while (value==NONE);
-//     return value;
-// }
-
 long long enterNumber(int task){
 	switch(task){
-		case UNSELECTED:{
-			printMenu();
-			break;
-		}
-		case addOne:{
-			printf("What brand?\n");
-			break;
-		}
-		case stats:{
-			break;
-		}
-		default:{
-			break;
-		}
+		case addOne: printf("fuckshit.\n"); break;
+		default: break;
 	}
 	long long number=UNSELECTED, temp=UNSELECTED;
 	int input=NONE;
 	while((input=scanf(" %lld", &temp))!=1 || temp<UNSELECTED || task==UNSELECTED){
-		if(input==EOF){
-			return EOF;
-		}
+		if(input==EOF) return EOF;
 		scanf("%*[^\n]");
 		switch(task){
-			case UNSELECTED:{
-				if(temp==done){
-					return done;
-				}
-				if(temp>=addOne && temp<=done){
-					number=temp;
-					return number;
-				}
-				break;
-			}
-			case addOne:{
+			case addOne:
 				scanf("%*[^\n]");
-				if(temp<INITIAL || temp>=NUM_OF_BRANDS){
-					continue;
-				}
+				if(temp<INITIAL || temp>=NUM_OF_BRANDS) break;
 				// int iter = NUM_OF_TYPES;
 				break;
-			}
-			case addAll:{
-
-				break;
-			}
-			case stats:{
-				break;
-			}
-			default:{
-				break;
-			}
+			default: break;
 		}
 	}
-	scanf("%*[^\n]");
-	number=temp;
-	return number;
+	scanf("%*[^\n]"); number=temp; return number;
 }
 
 /********************************************
@@ -291,11 +187,87 @@ int main(){
 		getLatestDay();
 		printf("choice = %d\n", choice);
         switch(choice){
-            case addOne: chosenAddOne(); break;
-            case addAll: express(addAll); break;
-            default: printf("Invalid input\n");
+            case addOne:
+			{
+				chosenAddOne();
+			break;
+			}
+            case addAll:
+			{
+				int today = (latestDay == NONE) ?INITIAL :latestDay;
+				printf("No data for brands");
+				for(int brand=INITIAL; brand<NUM_OF_BRANDS; brand++){
+					if (cube[today][brand][INITIAL]==NONE) printf(" %s", brands[brand]);
+				}
+				printf("\nPlease complete the data\n");
+			break;
+			}
+            case stats:
+			{
+				int day=NONE, totalSum=NONE;
+				if(getLatestDay()==NONE) return;
+				day=inputDay();
+				printf("In day number %d:\n",
+					day);
+				printf("The sales total was %d\n",
+					totalSum);
+				printf("The best sold brand with %d sales was %s\n",
+					mostSales[day][mAMOUNT],
+					brands[mostSales[day][mBRAND]]);
+				printf("The best sold type with %d sales was %s\n",
+					mostType[day][mAMOUNT],
+					types[mostType[day][mBRAND]]);
+			break;
+			}
+			case print:
+			{
+				int brand=NONE;
+				while(brand<NUM_OF_BRANDS){
+					printf("Sales for %s:\n",
+						brands[brand]);
+					if(days[brand]==NONE) continue;
+					displayDay(brand);
+				}
+			break;
+			}
+			case insights:
+			{
+				int bBrand=bestBrand(), bType=bestType(), bDay=bestDay();
+				printf("The best-selling brand overall is %s: %d\n$",
+					brands[bBrand],
+					sales(bBrand));
+				printf("The best-selling type of car is %s: %d$\n",
+					types[bType],
+					sales(bType));
+				printf("The most profitable day was day number %d: %d$\n",
+					bDay,
+					sales(bDay));
+			break;
+			}
+			case deltas:
+			{
+				int brand=INITIAL;
+				while(brand<NUM_OF_BRANDS){
+					printf("Brand: %s, Average Delta: %1.6f\n",
+						brands[brand],
+						avgDelta(brand++));
+				}
+			break;
+			}
+			case done:
+			{
+				printf("Goodbye!\n");
+			return 0;
+			}
+			default:
+			{
+				printf("Invalid input\n");
+			break;
+			}
         }
-    } printf("Goodbye!\n"); return 0;
+    }
+	printf("Goodbye!\n");
+	return 0;
 }
 
 int printMenu(){  // temporarily int (void)
@@ -313,7 +285,8 @@ int printMenu(){  // temporarily int (void)
 /********************************************
 input funcs
 *******************************************/
-int inputChoice(){choice=UNSELECTED; int temp=UNSELECTED, input=UNSELECTED;
+int inputChoice(){
+	choice=UNSELECTED; int temp=UNSELECTED, input=UNSELECTED;
     while((printMenu() && ((input=scanf(" %d", &temp)) != 1 || temp<addOne || temp>done))){
 		if(input==EOF) return done;
 		scanf("%*[^\n]"); printf("Invalid input\n"); temp=UNSELECTED;
