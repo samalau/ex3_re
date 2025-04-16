@@ -181,7 +181,7 @@ int main(){
             case stats:
 			{
 				int day=NONE, totalSum=NONE;
-				if(getLatestDay()==NONE) return;
+				if(getLatestDay()==NONE) break;
 				day=inputDay();
 				printf("In day number %d:\n",
 					day);
