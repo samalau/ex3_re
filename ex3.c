@@ -19,6 +19,12 @@ misc. mess assigns
 navigation assigns
 *******************************************/
 int inputChoice();
+int addOneChosen();
+int addAllChosen();
+int statsChosen();
+int printChosen();
+int insightsChosen();
+int deltasChosen();
 int choice;
 
 /********************************************
@@ -94,15 +100,6 @@ void getLatestDay(){
 	latestDay=99; // DEBUG
 }
 
-int inputDay(){
-	printf("DEBUG: (2)latestDay is %d\n", latestDay);
-	int day=NONE, temp=NONE, input=UNSELECTED;
-	while(printf("What day would you like to analyze?\n") && ((input=scanf(" %d", &temp)) != 1 || temp<INITIAL || temp>latestDay)){
-		if(input==EOF) return EOF;
-		scanf("%*[^\n]"); printf("Please enter a valid day.\n"); temp=NONE;
-	} scanf("%*[^\n]"); day=temp; return day;
-}
-
 void displayDay(int brand){
 	int currentDay=NONE;
 	while(++currentDay<=days[brand]){
@@ -134,16 +131,6 @@ float avgDelta(int brand){
 }
 
 /********************************************
-addOne funcs
-*******************************************/
-// int chosenAddOne(){
-    // int brandIndex=enterNumber(addOne);
-    // if(brandIndex==EOF) return EOF;
-    // if(brandIndex<INITIAL || brandIndex>=NUM_OF_BRANDS){printf("This brand is not valid\n"); return UNSELECTED;}
-//     return 1;
-// }
-
-/********************************************
 initialize funcs
 *******************************************/
 void init(){
@@ -160,19 +147,19 @@ void init(){
 navigate funcs
 *******************************************/
 int main(){
-    init();
-    while((inputChoice())!=done){
+	init();
+	while((inputChoice())!=done){
 		printf("DEBUG: (0)latestDay is %d\n", latestDay);
 		getLatestDay();
 		printf("DEBUG: (1)latestDay is %d\n", latestDay);
 		printf("choice = %d\n", choice);
-        switch(choice){
-            case addOne:
+		switch(choice){
+			case addOne:
 			{
 				// chosenAddOne();
 			break;
 			}
-            case addAll:
+			case addAll:
 			{
 				int today = (latestDay == NONE) ?INITIAL :latestDay;
 				printf("No data for brands");
@@ -183,7 +170,7 @@ int main(){
 				printf("DEBUG: GET DATA\n");
 			break;
 			}
-            case stats:
+			case stats:
 			{
 				int day=NONE;//, totalSum=NONE;
 				if(latestDay==NONE && printf("DEBUG: LATEST\n")) break;
@@ -255,21 +242,21 @@ int main(){
 				printf("Invalid input\n");
 			break;
 			}
-        }
-    } term:
+		}
+	} term:
 	printf("Goodbye!\n");
 	return 0;
 }
 
 int printMenu(){  // temporarily int (void)
-    printf("Welcome to the Cars Data Cube! What would you like to do?\n"
-           "1.Enter Daily Data For A Brand\n"
-           "2.Populate A Day Of Sales For All Brands\n"
-           "3.Provide Daily Stats\n"
-           "4.Print All Data\n"
-           "5.Provide Overall (simple) Insights\n"
-           "6.Provide Average Delta Metrics\n"
-           "7.exit\n");
+	printf("Welcome to the Cars Data Cube! What would you like to do?\n"
+		   "1.Enter Daily Data For A Brand\n"
+		   "2.Populate A Day Of Sales For All Brands\n"
+		   "3.Provide Daily Stats\n"
+		   "4.Print All Data\n"
+		   "5.Provide Overall (simple) Insights\n"
+		   "6.Provide Average Delta Metrics\n"
+		   "7.exit\n");
 	return 1; // temporary returns int (void)
 }
 
@@ -278,10 +265,37 @@ input funcs
 *******************************************/
 int inputChoice(){
 	choice=UNSELECTED; int temp=UNSELECTED, input=UNSELECTED;
-    while(printMenu() && ((input=scanf(" %d", &temp)) != 1 || temp<addOne || temp>done)){
+	while(printMenu() && ((input=scanf(" %d", &temp)) != 1 || temp<addOne || temp>done)){
 		if(input==EOF) return done;
 		scanf("%*[^\n]"); printf("Invalid input\n"); temp=UNSELECTED;
 	} scanf("%*[^\n]"); choice=temp; return choice;
+}
+
+int inputDay(){
+	printf("DEBUG: (2)latestDay is %d\n", latestDay);
+	int day=NONE, temp=NONE, input=UNSELECTED;
+	while(printf("What day would you like to analyze?\n") && ((input=scanf(" %d", &temp)) != 1 || temp<INITIAL || temp>latestDay)){
+		if(input==EOF) return EOF;
+		scanf("%*[^\n]"); printf("Please enter a valid day.\n"); temp=NONE;
+	} scanf("%*[^\n]"); day=temp; return day;
+}
+
+int inputData(){
+		int input=0, num = -1, tempBrand=-1, tempST0=-1, tempST1=-1, tempST2=-1, tempST3=-1;
+		printf("PROMPT\n");
+		while(printf("PROMPT\n")
+			&& ((input=scanf(" %d %d %d %d %d",
+				&tempBrand, &tempST0, &tempST1, tempST2, &tempST3)) != 5
+				|| tempBrand<=NONE || tempBrand>=NUM_OF_BRANDS
+				||
+				||
+				||
+			)){
+			if(input==EOF) return EOF;
+			scanf("%*[^\n]"); printf("INVALID\n"); temp=-1;
+		} scanf("%*[^\n]"); num=temp;
+		return num;  // if!void
+	}
 }
 
 /*****************************
@@ -295,3 +309,42 @@ type inputNonNegNum(){
 	return num;  // if!void
 }
 *****************************/
+
+/********************************************
+addOne funcs
+*******************************************/
+int addOneChosen(){
+	int brandIndex=inputData();
+	if(brandIndex==EOF) return EOF;
+	if(brandIndex<INITIAL || brandIndex>=NUM_OF_BRANDS){
+		printf("This brand is not valid\n");
+		return UNSELECTED;  // DEBUG
+	}
+	return 1;  // DEBUG
+}
+
+
+/********************************************
+addAll funcs
+*******************************************/
+int addAllChosen(){}
+
+/********************************************
+stats funcs
+*******************************************/
+int statsChosen(){}
+
+/********************************************
+print funcs
+*******************************************/
+int printChosen(){}
+
+/********************************************
+insights funcs
+*******************************************/
+int insightsChosen(){}
+
+/********************************************
+deltas funcs
+*******************************************/
+int deltasChosen(){}
