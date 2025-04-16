@@ -20,11 +20,11 @@ navigation assigns
 *******************************************/
 int inputChoice();
 int addOneChosen();
-int addAllChosen();
-int statsChosen();
-int printChosen();
-int insightsChosen();
-int deltasChosen();
+void addAllChosen();
+void statsChosen();
+void printChosen();
+void insightsChosen();
+void deltasChosen();
 int choice;
 
 /********************************************
@@ -52,6 +52,7 @@ time assigns
 #define DAYS_IN_YEAR 365
 int days[NUM_OF_BRANDS];
 int latestDay = NONE;
+int inputDay();
 int bestDay();
 
 /********************************************
@@ -74,6 +75,7 @@ float avgDelta(int brand);
 data cube assigns
 *******************************************/
 int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES];
+int inputData();
 
 /********************************************
 brand funcs
@@ -156,7 +158,7 @@ int main(){
 		switch(choice){
 			case addOne:
 			{
-				// chosenAddOne();
+				if (addOneChosen()==EOF) goto term;
 			break;
 			}
 			case addAll:
@@ -281,70 +283,56 @@ int inputDay(){
 }
 
 int inputData(){
-		int input=0, num = -1, tempBrand=-1, tempST0=-1, tempST1=-1, tempST2=-1, tempST3=-1;
-		printf("PROMPT\n");
-		while(printf("PROMPT\n")
-			&& ((input=scanf(" %d %d %d %d %d",
-				&tempBrand, &tempST0, &tempST1, tempST2, &tempST3)) != 5
-				|| tempBrand<=NONE || tempBrand>=NUM_OF_BRANDS
-				||
-				||
-				||
-			)){
-			if(input==EOF) return EOF;
-			scanf("%*[^\n]"); printf("INVALID\n"); temp=-1;
-		} scanf("%*[^\n]"); num=temp;
-		return num;  // if!void
-	}
-}
-
-/*****************************
-type inputNonNegNum(){
-	type min=0, max=5, num = -1, temp=-1, input=0;
-	printf("PROMPT\n");
-	while(printf("PROMPT\n") && ((input=scanf(" %d", &temp)) != 1 || temp<min || temp>max)){
+	int input=0, tempBrand=-1, tempST[NUM_OF_TYPES]={-1, -1, -1, -1};
+	// MAGIC: !=5
+	while(
+		printf("DEBUG: PROMPT\n")
+		&&((input=scanf(" %d %d %d %d %d", &tempBrand, &tempST[0], &tempST[1], &tempST[2], &tempST[3])) !=5
+		||tempBrand<0 ||tempBrand>=NUM_OF_BRANDS
+		||tempST[0]<0 ||tempST[1]<0 ||tempST[2]<0 ||tempST[3]<0
+	)){
 		if(input==EOF) return EOF;
-		scanf("%*[^\n]"); printf("INVALID\n"); temp=-1;
-	} scanf("%*[^\n]"); num=temp;
-	return num;  // if!void
+		scanf("%*[^\n]"); printf("This brand is not valid\n");
+		tempBrand=tempST[0]=tempST[1]=tempST[2]=tempST[3]=-1;
+	}
+	scanf("%*[^\n]");
+	int brand=tempBrand;
+	int sales=0;  // MAGIC
+	for(int type=0; type<NUM_OF_TYPES; type++){
+		sales = tempST[type];
+		cube[latestDay][brand][type] = sales;
+	}
+	return 1;  // MAGIC
 }
-*****************************/
 
 /********************************************
 addOne funcs
 *******************************************/
 int addOneChosen(){
-	int brandIndex=inputData();
-	if(brandIndex==EOF) return EOF;
-	if(brandIndex<INITIAL || brandIndex>=NUM_OF_BRANDS){
-		printf("This brand is not valid\n");
-		return UNSELECTED;  // DEBUG
-	}
-	return 1;  // DEBUG
+	return (inputData()==EOF) ?EOF :1;  // MAGIC
 }
-
 
 /********************************************
 addAll funcs
 *******************************************/
-int addAllChosen(){}
+void addAllChosen(){}
 
 /********************************************
 stats funcs
 *******************************************/
-int statsChosen(){}
+void statsChosen(){}
 
 /********************************************
 print funcs
 *******************************************/
-int printChosen(){}
+void printChosen(){}
 
 /********************************************
 insights funcs
 *******************************************/
-int insightsChosen(){}
+void insightsChosen(){}
 
 /********************************************
 deltas funcs
 *******************************************/
-int deltasChosen(){}
+void deltasChosen(){}
