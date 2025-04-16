@@ -91,13 +91,14 @@ int getLatestDay(){
 }
 
 int inputDay(){
-	int day = NONE;
+	int day = NONE, temp=NONE, input=UNSELECTED;
 	printf("What day would you like to analyze?\n");
-	day = enterNumber(stats);
-	if (day<INITIAL || day>latestDay){
+	while((input=scanf(" %d", &temp)) != 1 || temp<INITIAL || temp>latestDay){
+		if(input==EOF) return done;
+		scanf("%*[^\n]");
 		printf("Please enter a valid day.\n");
-		inputDay();
-	} return day;
+		temp=NONE;
+	} scanf("%*[^\n]"); day=temp; return day;
 }
 
 void displayDay(int brand){
@@ -134,9 +135,9 @@ float avgDelta(int brand){
 addOne funcs
 *******************************************/
 int chosenAddOne(){
-    int brandIndex=enterNumber(addOne);
-    if(brandIndex==EOF) return EOF;
-    if(brandIndex<INITIAL || brandIndex>=NUM_OF_BRANDS){printf("This brand is not valid\n"); return UNSELECTED;}
+    // int brandIndex=enterNumber(addOne);
+    // if(brandIndex==EOF) return EOF;
+    // if(brandIndex<INITIAL || brandIndex>=NUM_OF_BRANDS){printf("This brand is not valid\n"); return UNSELECTED;}
     return 1;
 }
 
@@ -262,7 +263,7 @@ input funcs
 *******************************************/
 int inputChoice(){
 	choice=UNSELECTED; int temp=UNSELECTED, input=UNSELECTED;
-    while((printMenu() && ((input=scanf(" %d", &temp)) != 1 || temp<addOne || temp>done))){
+    while(printMenu() && ((input=scanf(" %d", &temp)) != 1 || temp<addOne || temp>done)){
 		if(input==EOF) return done;
 		scanf("%*[^\n]"); printf("Invalid input\n"); temp=UNSELECTED;
 	} scanf("%*[^\n]"); choice=temp; return choice;
