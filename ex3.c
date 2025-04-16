@@ -94,7 +94,7 @@ int inputDay(){
 	int day = NONE, temp=NONE, input=UNSELECTED;
 	printf("What day would you like to analyze?\n");
 	while((input=scanf(" %d", &temp)) != 1 || temp<INITIAL || temp>latestDay){
-		if(input==EOF) return done;
+		if(input==EOF) return EOF;
 		scanf("%*[^\n]");
 		printf("Please enter a valid day.\n");
 		temp=NONE;
@@ -134,12 +134,12 @@ float avgDelta(int brand){
 /********************************************
 addOne funcs
 *******************************************/
-int chosenAddOne(){
+// int chosenAddOne(){
     // int brandIndex=enterNumber(addOne);
     // if(brandIndex==EOF) return EOF;
     // if(brandIndex<INITIAL || brandIndex>=NUM_OF_BRANDS){printf("This brand is not valid\n"); return UNSELECTED;}
-    return 1;
-}
+//     return 1;
+// }
 
 /********************************************
 initialize funcs
@@ -165,7 +165,7 @@ int main(){
         switch(choice){
             case addOne:
 			{
-				chosenAddOne();
+				// chosenAddOne();
 			break;
 			}
             case addAll:
@@ -183,16 +183,21 @@ int main(){
 				int day=NONE, totalSum=NONE;
 				if(getLatestDay()==NONE) break;
 				day=inputDay();
-				printf("In day number %d:\n",
-					day);
-				printf("The sales total was %d\n",
-					totalSum);
-				printf("The best sold brand with %d sales was %s\n",
-					mostSales[day][mAMOUNT],
-					brands[mostSales[day][mBRAND]]);
-				printf("The best sold type with %d sales was %s\n",
-					mostType[day][mAMOUNT],
-					types[mostType[day][mBRAND]]);
+				if (day==EOF) goto term;
+
+				printf("DEBUG: In day number _:\n");
+				// printf("In day number %d:\n", day);
+				
+				printf("DEBUG: The sales total was _\n");
+				// printf("The sales total was %d\n", totalSum);
+
+				printf("DEBUG: The best sold brand with _ sales was _\n");
+				// printf("The best sold brand with %d sales was %s\n",
+				// 	mostSales[day][mAMOUNT], brands[mostSales[day][mBRAND]]);
+
+				printf("DEBUG: The best sold type with _ sales was _\n");
+				// printf("The best sold type with %d sales was %s\n",
+				// 	mostType[day][mAMOUNT], types[mostType[day][mBRAND]]);
 			break;
 			}
 			case print:
@@ -209,15 +214,20 @@ int main(){
 			case insights:
 			{
 				int bBrand=bestBrand(), bType=bestType(), bDay=bestDay();
-				printf("The best-selling brand overall is %s: %d\n$",
-					brands[bBrand],
-					sales(bBrand));
-				printf("The best-selling type of car is %s: %d$\n",
-					types[bType],
-					sales(bType));
-				printf("The most profitable day was day number %d: %d$\n",
-					bDay,
-					sales(bDay));
+				printf("The best-selling brand overall is fuckyou: fuckyoudie\n$");
+				// printf("The best-selling brand overall is %s: %d\n$",
+				// 	brands[bBrand],
+				// 	sales(bBrand));
+
+				printf("The best-selling type of car is f: u$\n");
+				// printf("The best-selling type of car is %s: %d$\n",
+				// 	types[bType],
+				// 	sales(bType));
+
+				printf("DEBUG: The most profitable day was day number fuck: youdie$\n");
+				// printf("The most profitable day was day number %d: %d$\n",
+				// 	bDay,
+				// 	sales(bDay));
 			break;
 			}
 			case deltas:
@@ -232,8 +242,8 @@ int main(){
 			}
 			case done:
 			{
-				printf("Goodbye!\n");
-			return 0;
+				goto term;
+			break;
 			}
 			default:
 			{
@@ -241,7 +251,7 @@ int main(){
 			break;
 			}
         }
-    }
+    } term:
 	printf("Goodbye!\n");
 	return 0;
 }
@@ -252,7 +262,7 @@ int printMenu(){  // temporarily int (void)
            "2.Populate A Day Of Sales For All Brands\n"
            "3.Provide Daily Stats\n"
            "4.Print All Data\n"
-           "5.Provide Overall(simple) Insights\n"
+           "5.Provide Overall (simple) Insights\n"
            "6.Provide Average Delta Metrics\n"
            "7.exit\n");
 	return 1; // temporary returns int (void)
