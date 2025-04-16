@@ -95,9 +95,7 @@ int inputDay(){
 	printf("What day would you like to analyze?\n");
 	while((input=scanf(" %d", &temp)) != 1 || temp<INITIAL || temp>latestDay){
 		if(input==EOF) return EOF;
-		scanf("%*[^\n]");
-		printf("Please enter a valid day.\n");
-		temp=NONE;
+		scanf("%*[^\n]"); printf("Please enter a valid day.\n"); temp=NONE;
 	} scanf("%*[^\n]"); day=temp; return day;
 }
 
@@ -180,7 +178,7 @@ int main(){
 			}
             case stats:
 			{
-				int day=NONE, totalSum=NONE;
+				int day=NONE;//, totalSum=NONE;
 				if(getLatestDay()==NONE) break;
 				day=inputDay();
 				if (day==EOF) goto term;
@@ -203,9 +201,8 @@ int main(){
 			case print:
 			{
 				int brand=NONE;
-				while(brand<NUM_OF_BRANDS){
-					printf("Sales for %s:\n",
-						brands[brand]);
+				while(++brand<NUM_OF_BRANDS){
+					printf("Sales for %s:\n", brands[brand]);
 					if(days[brand]==NONE) continue;
 					displayDay(brand);
 				}
@@ -213,13 +210,13 @@ int main(){
 			}
 			case insights:
 			{
-				int bBrand=bestBrand(), bType=bestType(), bDay=bestDay();
-				printf("The best-selling brand overall is fuckyou: fuckyoudie\n$");
-				// printf("The best-selling brand overall is %s: %d\n$",
+				// int bBrand=bestBrand(), bType=bestType(), bDay=bestDay();
+				printf("DEBUG: The best-selling brand overall is fuckyou: fuckyoudie$\n");
+				// printf("The best-selling brand overall is %s: %d$\n",
 				// 	brands[bBrand],
 				// 	sales(bBrand));
 
-				printf("The best-selling type of car is f: u$\n");
+				printf("DEBUG: The best-selling type of car is f: u$\n");
 				// printf("The best-selling type of car is %s: %d$\n",
 				// 	types[bType],
 				// 	sales(bType));
@@ -234,9 +231,10 @@ int main(){
 			{
 				int brand=NONE;
 				while(++brand<NUM_OF_BRANDS){
-					printf("Brand: %s, Average Delta: %1.6f\n",
-						brands[brand],
-						avgDelta(brand));
+					printf("DEBUG: Brand: f u c k, Average Delta: y o u\n");
+					// printf("Brand: %s, Average Delta: %1.6f\n",
+					// 	brands[brand],
+					// 	avgDelta(brand));
 				}
 			break;
 			}
@@ -278,3 +276,26 @@ int inputChoice(){
 		scanf("%*[^\n]"); printf("Invalid input\n"); temp=UNSELECTED;
 	} scanf("%*[^\n]"); choice=temp; return choice;
 }
+
+
+/*****************************
+int inputDay(){
+	int day = NONE, temp=NONE, input=UNSELECTED;
+	printf("What day would you like to analyze?\n");
+	while((input=scanf(" %d", &temp)) != 1 || temp<INITIAL || temp>latestDay){
+		if(input==EOF) return EOF;
+		scanf("%*[^\n]");
+		printf("Please enter a valid day.\n");
+		temp=NONE;
+	} scanf("%*[^\n]"); day=temp; return day;
+}
+
+int inputChoice(){
+	choice=UNSELECTED; int temp=UNSELECTED, input=UNSELECTED;
+    while(printMenu() && ((input=scanf(" %d", &temp)) != 1 || temp<addOne || temp>done)){
+		if(input==EOF) return done;
+		scanf("%*[^\n]"); printf("Invalid input\n"); temp=UNSELECTED;
+	} scanf("%*[^\n]"); choice=temp; return choice;
+}
+
+*****************************/
