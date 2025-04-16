@@ -83,17 +83,21 @@ int bestDay(){
 	return 0;
 }
 
-int getLatestDay(){
-	int temp = NONE;
+void getLatestDay(){
+	// int temp=NONE;
 	for(int brand=INITIAL; brand<NUM_OF_BRANDS; brand++){
-		if(days[brand]>latestDay) latestDay=days[brand]; temp = days[brand];  
-	} return temp;
+		if(days[brand]>latestDay) {
+			latestDay=days[brand];
+			// temp=days[brand];
+		}
+	}// return temp;
+	latestDay=99; // DEBUG
 }
 
 int inputDay(){
-	int day = NONE, temp=NONE, input=UNSELECTED;
-	printf("What day would you like to analyze?\n");
-	while((input=scanf(" %d", &temp)) != 1 || temp<INITIAL || temp>latestDay){
+	printf("DEBUG: (2)latestDay is %d\n", latestDay);
+	int day=NONE, temp=NONE, input=UNSELECTED;
+	while(printf("What day would you like to analyze?\n") && ((input=scanf(" %d", &temp)) != 1 || temp<INITIAL || temp>latestDay)){
 		if(input==EOF) return EOF;
 		scanf("%*[^\n]"); printf("Please enter a valid day.\n"); temp=NONE;
 	} scanf("%*[^\n]"); day=temp; return day;
@@ -158,7 +162,9 @@ navigate funcs
 int main(){
     init();
     while((inputChoice())!=done){
+		printf("DEBUG: (0)latestDay is %d\n", latestDay);
 		getLatestDay();
+		printf("DEBUG: (1)latestDay is %d\n", latestDay);
 		printf("choice = %d\n", choice);
         switch(choice){
             case addOne:
@@ -174,12 +180,13 @@ int main(){
 					if (cube[today][brand][INITIAL]==NONE) printf(" %s", brands[brand]);
 				}
 				printf("\nPlease complete the data\n");
+				printf("DEBUG: GET DATA\n");
 			break;
 			}
             case stats:
 			{
 				int day=NONE;//, totalSum=NONE;
-				if(getLatestDay()==NONE) break;
+				if(latestDay==NONE && printf("DEBUG: LATEST\n")) break;
 				day=inputDay();
 				if (day==EOF) goto term;
 
@@ -277,25 +284,14 @@ int inputChoice(){
 	} scanf("%*[^\n]"); choice=temp; return choice;
 }
 
-
 /*****************************
-int inputDay(){
-	int day = NONE, temp=NONE, input=UNSELECTED;
-	printf("What day would you like to analyze?\n");
-	while((input=scanf(" %d", &temp)) != 1 || temp<INITIAL || temp>latestDay){
+type inputNonNegNum(){
+	type min=0, max=5, num = -1, temp=-1, input=0;
+	printf("PROMPT\n");
+	while(printf("PROMPT\n") && ((input=scanf(" %d", &temp)) != 1 || temp<min || temp>max)){
 		if(input==EOF) return EOF;
-		scanf("%*[^\n]");
-		printf("Please enter a valid day.\n");
-		temp=NONE;
-	} scanf("%*[^\n]"); day=temp; return day;
+		scanf("%*[^\n]"); printf("INVALID\n"); temp=-1;
+	} scanf("%*[^\n]"); num=temp;
+	return num;  // if!void
 }
-
-int inputChoice(){
-	choice=UNSELECTED; int temp=UNSELECTED, input=UNSELECTED;
-    while(printMenu() && ((input=scanf(" %d", &temp)) != 1 || temp<addOne || temp>done)){
-		if(input==EOF) return done;
-		scanf("%*[^\n]"); printf("Invalid input\n"); temp=UNSELECTED;
-	} scanf("%*[^\n]"); choice=temp; return choice;
-}
-
 *****************************/
