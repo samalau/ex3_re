@@ -131,31 +131,6 @@ float avgDelta(int brand){
 }
 
 /********************************************
-misc. mess funcs
-*******************************************/
-long long enterNumber(int task){
-	switch(task){
-		case addOne: printf("fuckshit.\n"); break;
-		default: break;
-	}
-	long long number=UNSELECTED, temp=UNSELECTED;
-	int input=NONE;
-	while((input=scanf(" %lld", &temp))!=1 || temp<UNSELECTED || task==UNSELECTED){
-		if(input==EOF) return EOF;
-		scanf("%*[^\n]");
-		switch(task){
-			case addOne:
-				scanf("%*[^\n]");
-				if(temp<INITIAL || temp>=NUM_OF_BRANDS) break;
-				// int iter = NUM_OF_TYPES;
-				break;
-			default: break;
-		}
-	}
-	scanf("%*[^\n]"); number=temp; return number;
-}
-
-/********************************************
 addOne funcs
 *******************************************/
 int chosenAddOne(){
