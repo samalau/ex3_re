@@ -6,7 +6,7 @@ Assignment: ex3
 #include <stdio.h>
 
 /********************************************
-misc. mess
+misc. mess assigns
 *******************************************/
 #define NONE -1
 #define UNSELECTED 0
@@ -16,13 +16,13 @@ misc. mess
 #define mSIZE 2
 
 /********************************************
-navigation
+navigation assigns
 *******************************************/
 int inputChoice();
 int choice;
 
 /********************************************
-path id
+path assigns
 *******************************************/
 #define addOne  1
 #define addAll  2  
@@ -70,14 +70,14 @@ data cube assigns
 int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES];
 
 /********************************************
-brand func
+brand funcs
 *******************************************/
 int bestBrand(){
 	return 0;
 }
 
 /********************************************
-time
+time funcs
 *******************************************/
 int bestDay(){
 	return 0;
@@ -111,14 +111,14 @@ void displayDay(int brand){
 }}}}}
 
 /********************************************
-type
+type funcs
 *******************************************/
 int bestType(){
 	return 0;
 }
 
 /********************************************
-sales
+sales funcs
 *******************************************/
 int sales(int x){
 	x=0;
@@ -131,7 +131,7 @@ float avgDelta(int brand){
 }
 
 /********************************************
-misc. mess
+misc. mess funcs
 *******************************************/
 void express(int focus){switch(focus){
 		case addOne: return;
@@ -260,7 +260,7 @@ long long enterNumber(int task){
 }
 
 /********************************************
-addOne
+addOne funcs
 *******************************************/
 int chosenAddOne(){
     int brandIndex=enterNumber(addOne);
@@ -270,7 +270,7 @@ int chosenAddOne(){
 }
 
 /********************************************
-initialize
+initialize funcs
 *******************************************/
 void init(){
 	for(int day=INITIAL; day<DAYS_IN_YEAR; day++){
@@ -283,7 +283,7 @@ void init(){
 }
 
 /********************************************
-navigate
+navigate funcs
 *******************************************/
 int main(){
     init();
@@ -311,7 +311,7 @@ int printMenu(){  // temporarily int (void)
 }
 
 /********************************************
-input 
+input funcs
 *******************************************/
 int inputChoice(){choice=UNSELECTED; int temp=UNSELECTED, input=UNSELECTED;
     while((printMenu() && ((input=scanf(" %d", &temp)) != 1 || temp<addOne || temp>done))){
