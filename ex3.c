@@ -200,12 +200,10 @@ int main(){
 			case print:
 			{
 				int brand=0;  // MAGIC
-				while(brand++<NUM_OF_BRANDS){
-					printf("DEBUG(0): brands[brand] = %s\n", brands[brand]);
+				while(brand<NUM_OF_BRANDS){
 					printf("Sales for %s:\n", brands[brand]);
-					printf("DEBUG(1): brands[brand] = %s\n", brands[brand]);
-					// DEBUG: WHY NOT ENTERING??
-					if(days[brand]>NONE) displayDay(brand);
+					// if(days[brand]>NONE) {displayDay(brand);}
+					brand++;
 				}
 			break;
 			}
