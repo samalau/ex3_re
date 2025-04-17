@@ -95,7 +95,7 @@ int bestDay(){
 
 void getLatestDay(){
 	for(int brand=INITIAL; brand<NUM_OF_BRANDS; brand++){
-		if(days[brand]>latestDay) {
+		if(days[brand]>latestDay){
 			latestDay=days[brand];
 		}
 	}
@@ -162,13 +162,13 @@ int main(){
 			case addOne:
 			{
 				int today=(latestDay==NONE) ?INITIAL :latestDay;
-				if (addOneChosen(cube, today)==EOF) goto term;
+				if(addOneChosen(cube, today)==EOF) goto term;
 			break;
 			}
 			case addAll:
 			{
 				int today=(latestDay==NONE) ?INITIAL :latestDay;
-				if (addAllChosen(cube, today)==EOF) goto term;
+				if(addAllChosen(cube, today)==EOF) goto term;
 				
 			break;
 			}
@@ -177,7 +177,7 @@ int main(){
 				int day=NONE; // totalSum=NONE;
 				if(latestDay==NONE && printf("DEBUG: LATEST\n")) break;
 				day=inputDay();
-				if (day==EOF) goto term;
+				if(day==EOF) goto term;
 
 				printf("DEBUG: In day number _:\n");
 				// printf("In day number %d:\n", day);
@@ -202,7 +202,7 @@ int main(){
 					printf("(1)FUCK YOU\n");
 					printf("Sales for %s:\n", brands[brand]);
 					printf("(2)FUCK YOU\n");
-					if(days[brand]>NONE) {
+					if(days[brand]>NONE){
 						printf("(3)FUCK YOU\n");
 						displayDay(brand);
 					}  // DEBUG: WHY NOT ENTERING??
@@ -299,7 +299,10 @@ int noticeNoData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES], int today)
 }
 
 int inputData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES], int today){
-	int input=0, tempBrand=-1, tempST[NUM_OF_TYPES]={-1, -1, -1, -1};
+	int input=0, tempBrand=NONE, tempST[NUM_OF_TYPES];
+	for(int i=0; i<NUM_OF_TYPES; i++){
+		tempST[i] = NONE;
+	}
 	// MAGIC: !=5
 	while(noticeNoData(cube, today)
 		&&((input=scanf(" %d %d %d %d %d", &tempBrand, &tempST[0], &tempST[1], &tempST[2], &tempST[3])) !=5
@@ -320,7 +323,7 @@ int inputData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES], int today){
 		cube[latestDay][brand][type] = sales;
 		printf("DEBUG: (1)cube[latestDay][brand][type] = %d\n", cube[latestDay][brand][type]);
 	}
-	return 1;  // MAGIC
+	return 1;
 }
 
 /********************************************
