@@ -53,15 +53,15 @@ data cube assigns
 *******************************************/
 // int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES];
 void init(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
-int inputData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES], int today);
-int noticeNoData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES], int today);
+int inputData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
+int noticeNoData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
 
 /********************************************
 navigation assigns
 *******************************************/
 int inputChoice();
-int addOneChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES], int today);
-int addAllChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES], int today);
+int addOneChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
+int addAllChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
 void statsChosen();
 void printChosen();
 void insightsChosen();
@@ -161,14 +161,17 @@ int main(){
 		switch(choice){
 			case addOne:
 			{
-				int today=(latestDay==NONE) ?INITIAL :latestDay;
-				if(addOneChosen(cube, today)==EOF) goto term;
+				// int today=(latestDay==NONE) ?INITIAL :latestDay;
+				if(addOneChosen(cube)==EOF) goto term;
 			break;
 			}
 			case addAll:
 			{
-				int today=(latestDay==NONE) ?INITIAL :latestDay;
-				if(addAllChosen(cube, today)==EOF) goto term;
+				for(int brand=0; brand<NUM_OF_BRANDS; brand++){
+					if(days[brand]<DAYS_IN_YEAR-1) if(addAllChosen(cube)==EOF) goto term;
+					printf("DEBUG: FULL DAYS\n");
+				}
+
 				
 			break;
 			}
@@ -197,16 +200,12 @@ int main(){
 			case print:
 			{
 				int brand=0;  // MAGIC
-				printf("(0)FUCK YOU\n");
 				while(brand++<NUM_OF_BRANDS){
-					printf("(1)FUCK YOU\n");
+					printf("DEBUG(0): brands[brand] = %s\n", brands[brand]);
 					printf("Sales for %s:\n", brands[brand]);
-					printf("(2)FUCK YOU\n");
-					if(days[brand]>NONE){
-						printf("(3)FUCK YOU\n");
-						displayDay(brand);
-					}  // DEBUG: WHY NOT ENTERING??
-					printf("(4)FUCK YOU\n");
+					printf("DEBUG(1): brands[brand] = %s\n", brands[brand]);
+					// DEBUG: WHY NOT ENTERING??
+					if(days[brand]>NONE) displayDay(brand);
 				}
 			break;
 			}
@@ -288,23 +287,23 @@ int inputDay(){
 	} scanf("%*[^\n]"); day=temp; return day;
 }
 
-int noticeNoData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES], int today){
+int noticeNoData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 	printf("No data for brands");
 	for(int brand=INITIAL; brand<NUM_OF_BRANDS; brand++){
-		if(cube[today][brand][INITIAL]==NONE)
+		if(cube[days[brand]+1][brand][INITIAL]==NONE)
 			printf(" %s", brands[brand]);
 	}
 	printf("\nPlease complete the data\n");
 	return 1;
 }
 
-int inputData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES], int today){
+int inputData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 	int input=0, tempBrand=NONE, tempST[NUM_OF_TYPES];
 	for(int i=0; i<NUM_OF_TYPES; i++){
 		tempST[i] = NONE;
 	}
 	// MAGIC: !=5
-	while(noticeNoData(cube, today)
+	while(noticeNoData(cube)
 		&&((input=scanf(" %d %d %d %d %d", &tempBrand, &tempST[0], &tempST[1], &tempST[2], &tempST[3])) !=5
 		||tempBrand<0 ||tempBrand>=NUM_OF_BRANDS ||tempST[0]<0 ||tempST[1]<0 ||tempST[2]<0 ||tempST[3]<0
 	)){
@@ -319,9 +318,10 @@ int inputData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES], int today){
 		printf("DEBUG: (0)tempST[type] = %d\n", tempST[type]);
 		sales = tempST[type];
 		printf("DEBUG: (0)sales = %d\n", sales);
-		printf("DEBUG: (0)cube[latestDay][brand][type] = %d\n", cube[today][brand][type]);
-		cube[today][brand][type] = sales;
-		printf("DEBUG: (1)cube[latestDay][brand][type] = %d\n", cube[today][brand][type]);
+		printf("DEBUG: (0)cube[latestDay][brand][type] = %d\n", cube[days[brand]+1][brand][type]);
+		// make days[brand]+1 actually minimum
+		cube[days[brand]+1][brand][type] = sales;
+		printf("DEBUG: (1)cube[latestDay][brand][type] = %d\n", cube[days[brand]+1][brand][type]);
 	}
 	return 1;
 }
@@ -329,7 +329,7 @@ int inputData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES], int today){
 /********************************************
 addOne funcs
 *******************************************/
-int addOneChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES], int today){
+int addOneChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 	// return (inputData(cube, today)==EOF) ?EOF :1;  // MAGIC
 	int input=0, tempBrand=NONE, tempST[NUM_OF_TYPES];
 	for(int i=0; i<NUM_OF_TYPES; i++){
@@ -351,20 +351,23 @@ int addOneChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES], int today)
 		printf("DEBUG: (0)tempST[type] = %d\n", tempST[type]);
 		sales = tempST[type];
 		printf("DEBUG: (0)sales = %d\n", sales);
-		printf("DEBUG: (0)cube[latestDay][brand][type] = %d\n", cube[today][brand][type]);
-		cube[today][brand][type] = sales;
-		printf("DEBUG: (1)cube[latestDay][brand][type] = %d\n", cube[today][brand][type]);
+		printf("DEBUG: (0)cube[days[brand]+1][brand][type] = %d\n", cube[days[brand]+1][brand][type]);
+		cube[days[brand]+1][brand][type] = sales;
+		printf("DEBUG: (1)cube[days[brand]+1][brand][type] = %d\n", cube[days[brand]+1][brand][type]);
 	}
+	printf("DEBUG: days[brand]+1 = %d", days[brand]+1);
+	days[brand]++;
+	printf("DEBUG: days[brand]+1 = %d", days[brand]+1);
 	return 1;
 }
 
 /********************************************
 addAll funcs
 *******************************************/
-int addAllChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES], int today){
+int addAllChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 	int types=NUM_OF_TYPES;
 	while(types>0){
-		if(inputData(cube, today)==EOF){
+		if(inputData(cube)==EOF){
 			return EOF;
 	}  }
 	return 1;  // MAGIC
