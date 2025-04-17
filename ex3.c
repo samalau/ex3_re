@@ -54,6 +54,7 @@ data cube assigns
 // int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES];
 void init(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
 int inputData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES], int today);
+int noticeNoData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES], int today);
 
 /********************************************
 navigation assigns
@@ -300,7 +301,7 @@ int noticeNoData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES], int today)
 int inputData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES], int today){
 	int input=0, tempBrand=-1, tempST[NUM_OF_TYPES]={-1, -1, -1, -1};
 	// MAGIC: !=5
-	while(noticeNoData(today)
+	while(noticeNoData(cube, today)
 		&&((input=scanf(" %d %d %d %d %d", &tempBrand, &tempST[0], &tempST[1], &tempST[2], &tempST[3])) !=5
 		||tempBrand<0 ||tempBrand>=NUM_OF_BRANDS ||tempST[0]<0 ||tempST[1]<0 ||tempST[2]<0 ||tempST[3]<0
 	)){
