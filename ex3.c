@@ -302,25 +302,24 @@ int inputDay(){
 }
 
 int noticeNoData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
-	int today=earliestDay+1;
+	int foundMissing = 0, today=earliestDay+1;
 	if (today<DAYS_IN_YEAR){
 		printf("No data for brands");
 		for(int brand=INITIAL; brand<NUM_OF_BRANDS; brand++){
-			if(cube[today][brand][INITIAL]==NONE)
+			if(cube[today][brand][INITIAL]==NONE){
 				printf(" %s", brands[brand]);
-		}
-		printf("\nPlease complete the data\n");
-		for(int brand=INITIAL; brand<NUM_OF_BRANDS; brand++){
-			if(cube[today][brand][INITIAL]==NONE)
-				return 1;
-		}
-	}
+				foundMissing = 1;
+		}	}
+		if(foundMissing){
+			printf("\nPlease complete the data\n");
+			return 1;
+	}	}
 	return 0;
 }
 
 int inputData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 	int input=0, today=earliestDay+1, tempBrand=NONE, tempST[NUM_OF_TYPES];
-	for(int type=0; type<NUM_OF_TYPES; type++){
+	for(int type=INITIAL; type<NUM_OF_TYPES; type++){
 		tempST[type]=NONE;
 	}
 	while((input=scanf(" %d %d %d %d %d", &tempBrand,
@@ -330,16 +329,17 @@ int inputData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 	||cube[today][tempBrand][INITIAL]!=NONE){
 		if(input==EOF) return EOF;
 		scanf("%*[^\n]"); printf("This brand is not valid\n");
-		tempBrand=tempST[0]=tempST[1]=tempST[2]=tempST[3]=-1;
+		tempBrand=tempST[0]=tempST[1]=tempST[2]=tempST[3]=NONE;
 	}
 	scanf("%*[^\n]");
 	int brand=tempBrand;
 	int sales=NONE;
-	for(int type=0; type<NUM_OF_TYPES; type++){
+	for(int type=INITIAL; type<NUM_OF_TYPES; type++){
 		sales=tempST[type];
 		cube[today][brand][type]=sales;
 	}
-	days[brand] = days[brand] + 1;
+	if (days[brand] == today)
+		days[brand] = today+1;
 	return 1;
 }
 
