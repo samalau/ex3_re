@@ -102,14 +102,17 @@ void getLatestDay(){
 }
 
 void displayDay(int brand){
-	int currentDay=NONE;
-	while(++currentDay<=days[brand]){
+	int currentDay=0;
+	while(currentDay<=days[brand]){
 		printf("Day %d-", currentDay+1);
 		for(int day=INITIAL; day<DAYS_IN_YEAR; day++){
 			for(int brand=INITIAL; brand<NUM_OF_BRANDS; brand++){
 				for(int type=INITIAL; type<NUM_OF_TYPES; type++){
-					printf(" %s: ", types[day]);
-}  }   }   }  }
+					printf(" %s: ", types[type]);
+		}  }  }
+		currentDay++;
+	}
+}
 
 /********************************************
 type funcs
@@ -202,7 +205,7 @@ int main(){
 				int brand=0;  // MAGIC
 				while(brand<NUM_OF_BRANDS){
 					printf("Sales for %s:\n", brands[brand]);
-					// if(days[brand]>NONE) {displayDay(brand);}
+					if(days[brand]>NONE) {displayDay(brand);}
 					brand++;
 				}
 			break;
