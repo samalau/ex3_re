@@ -28,7 +28,7 @@ time assigns
 *******************************************/
 #define DAYS_IN_YEAR 365
 int days[NUM_OF_BRANDS];
-int earliestDay = DAYS_IN_YEAR;
+int earliestDay = NONE;
 int latestDay = NONE;
 int inputDay();
 int bestDay();
@@ -168,11 +168,8 @@ int main(){
 	int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES];
 	init(cube);
 	while((inputChoice())!=done){
-		// printf("DEBUG: (0)latestDay is %d\n", latestDay);
 		getLatestDay();
 		getEarliestDay();
-		// printf("DEBUG: (1)latestDay is %d\n", latestDay);
-		// printf("choice = %d\n", choice);
 		switch(choice){
 			case addOne:
 			{
@@ -183,9 +180,10 @@ int main(){
 			case addAll:
 			{
 				for(int brand=0; brand<NUM_OF_BRANDS; brand++){
-					if(days[brand]<DAYS_IN_YEAR-1)
-						if(addAllChosen(cube)==EOF) goto term;
-				// printf("DEBUG: FULL DAYS\n");
+					printf("DEBUG: days[%d] = %d\n", brand, days[brand]);
+					if(days[brand]<DAYS_IN_YEAR-1){
+						if(addAllChosen(cube)==EOF) {goto term;}
+					}
 				}
 			break;
 			}
@@ -340,8 +338,7 @@ int inputData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 		sales=tempST[type];
 		cube[today][brand][type]=sales;
 	}
-	if (days[brand] == today)
-		days[brand] = today+1;
+	days[brand]++;
 	return 1;
 }
 
@@ -364,13 +361,12 @@ int addOneChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 		tempBrand=tempST[0]=tempST[1]=tempST[2]=tempST[3]=-1;
 	}
 	scanf("%*[^\n]");
-	int brand=tempBrand;
-	int sales=0;  // MAGIC
+	int brand=tempBrand, sales=0, newDay=days[brand]+1;
 	for(int type=0; type<NUM_OF_TYPES; type++){
 		sales = tempST[type];
-		cube[days[brand]+1][brand][type] = sales;
+		cube[newDay][brand][type] = sales;
 	}
-	days[brand] = days[brand] + 1;
+	days[brand] = newDay;
 	return 1;
 }
 
