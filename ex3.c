@@ -107,8 +107,9 @@ void displayDay(int brand){
 		for(int brand=INITIAL; brand<NUM_OF_BRANDS; brand++){
 			for(int type=INITIAL; type<NUM_OF_TYPES; type++){
 				printf(" %s: ", types[type]);
-}  }   }  }
-
+		}}
+	printf("\n");
+}}
 
 /********************************************
 type funcs
