@@ -302,19 +302,21 @@ int inputDay(){
 }
 
 int noticeNoData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
-	int foundMissing = 0, today=earliestDay+1;
+	int today=earliestDay+1, foundMissing=0;
 	if (today<DAYS_IN_YEAR){
-		printf("No data for brands");
 		for(int brand=INITIAL; brand<NUM_OF_BRANDS; brand++){
 			if(cube[today][brand][INITIAL]==NONE){
+				if(!foundMissing){
+					printf("No data for brands");
+					printf(" %s", brands[brand]);
+					foundMissing=1;
+					continue;
+				}
 				printf(" %s", brands[brand]);
-				foundMissing = 1;
-		}	}
-		if(foundMissing){
-			printf("\nPlease complete the data\n");
-			return 1;
-	}	}
-	return 0;
+			}	
+		}
+	}
+	return (foundMissing) ? printf("\nPlease complete the data\n") : 0;
 }
 
 int inputData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
