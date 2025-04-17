@@ -96,6 +96,7 @@ int bestDay(){
 }
 
 void getEarliestDay(){
+	earliestDay = DAYS_IN_YEAR;
 	for(int brand=INITIAL; brand<NUM_OF_BRANDS; brand++){
 		if(days[brand]<earliestDay){
 			earliestDay=days[brand];
@@ -311,15 +312,17 @@ int noticeNoData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 	// 	break;
 	// }
 	int today=earliestDay+1;
-	printf("No data for brands");
-	for(int brand=INITIAL; brand<NUM_OF_BRANDS; brand++){
-		if(cube[today][brand][INITIAL]==NONE)
-			printf(" %s", brands[brand]);
-	}
-	printf("\nPlease complete the data\n");
-	for(int brand=INITIAL; brand<NUM_OF_BRANDS; brand++){
-		if(cube[today][brand][INITIAL]==NONE)
-			return 1;
+	if (today<DAYS_IN_YEAR){
+		printf("No data for brands");
+		for(int brand=INITIAL; brand<NUM_OF_BRANDS; brand++){
+			if(cube[today][brand][INITIAL]==NONE)
+				printf(" %s", brands[brand]);
+		}
+		printf("\nPlease complete the data\n");
+		for(int brand=INITIAL; brand<NUM_OF_BRANDS; brand++){
+			if(cube[today][brand][INITIAL]==NONE)
+				return 1;
+		}
 	}
 	return 0;
 }
@@ -346,8 +349,8 @@ int inputData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 	for(int type=0; type<NUM_OF_TYPES; type++){
 		sales=tempST[type];
 		cube[today][brand][type]=sales;
-		days[brand]++;
 	}
+	if (days[brand] < today) {days[brand] = today;}
 	return 1;
 }
 
