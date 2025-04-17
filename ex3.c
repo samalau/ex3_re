@@ -28,6 +28,7 @@ time assigns
 *******************************************/
 #define DAYS_IN_YEAR 365
 int days[NUM_OF_BRANDS];
+int earliestDay = DAYS_IN_YEAR;
 int latestDay = NONE;
 int inputDay();
 int bestDay();
@@ -92,6 +93,15 @@ time funcs
 *******************************************/
 int bestDay(){
 	return 0;
+}
+
+void getEarliestDay(){
+	earliestDay = latestDay;
+	for(int brand=INITIAL; brand<NUM_OF_BRANDS; brand++){
+		if(days[brand]<earliestDay){
+			earliestDay=days[brand];
+		}
+	}
 }
 
 void getLatestDay(){
@@ -159,6 +169,7 @@ int main(){
 	while((inputChoice())!=done){
 		// printf("DEBUG: (0)latestDay is %d\n", latestDay);
 		getLatestDay();
+		getEarliestDay();
 		// printf("DEBUG: (1)latestDay is %d\n", latestDay);
 		// printf("choice = %d\n", choice);
 		switch(choice){
@@ -288,9 +299,20 @@ int inputDay(){
 }
 
 int noticeNoData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
+	// int today=earliestDay;
+	// for(int brand=INITIAL; brand<=NUM_OF_BRANDS; brand++){
+	// 	if(brand==NUM_OF_BRANDS){
+	// 		return 0;
+	// 	}else if(days[brand]>earliestDay &&cube[earliestDay][brand][INITIAL]<=NONE){
+	// 		break;
+	// 	}
+	// 	today=earliestDay+1;
+	// 	break;
+	// }
+	int today=earliestDay+1;
 	printf("No data for brands");
 	for(int brand=INITIAL; brand<NUM_OF_BRANDS; brand++){
-		if(cube[days[brand]+1][brand][INITIAL]==NONE)
+		if(cube[today][brand][INITIAL]==NONE)
 			printf(" %s", brands[brand]);
 	}
 	printf("\nPlease complete the data\n");
@@ -299,14 +321,13 @@ int noticeNoData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 
 int inputData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 	int input=0, tempBrand=NONE, tempST[NUM_OF_TYPES];
-	for(int i=0; i<NUM_OF_TYPES; i++){
-		tempST[i] = NONE;
+	for(int type=0; type<NUM_OF_TYPES; type++){
+		tempST[type] = NONE;
 	}
-	// MAGIC: !=5
 	while(noticeNoData(cube)
 		&&((input=scanf(" %d %d %d %d %d", &tempBrand, &tempST[0], &tempST[1], &tempST[2], &tempST[3])) !=5
 		||tempBrand<0 ||tempBrand>=NUM_OF_BRANDS ||tempST[0]<0 ||tempST[1]<0 ||tempST[2]<0 ||tempST[3]<0
-	)){
+	)){  // MAGIC: 5
 		if(input==EOF) return EOF;
 		scanf("%*[^\n]"); printf("This brand is not valid\n");
 		tempBrand=tempST[0]=tempST[1]=tempST[2]=tempST[3]=-1;
