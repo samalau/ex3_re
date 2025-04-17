@@ -102,17 +102,13 @@ void getLatestDay(){
 }
 
 void displayDay(int brand){
-	int currentDay=0;
-	while(currentDay<=days[brand]){
-		printf("Day %d-", currentDay+1);
-		for(int day=INITIAL; day<DAYS_IN_YEAR; day++){
-			for(int brand=INITIAL; brand<NUM_OF_BRANDS; brand++){
-				for(int type=INITIAL; type<NUM_OF_TYPES; type++){
-					printf(" %s: ", types[type]);
-		}  }  }
-		currentDay++;
-	}
-}
+	for(int day=INITIAL; day<=days[brand]; day++){
+		printf("Day %d-", day+1);
+		for(int brand=INITIAL; brand<NUM_OF_BRANDS; brand++){
+			for(int type=INITIAL; type<NUM_OF_TYPES; type++){
+				printf(" %s: ", types[type]);
+}  }   }  }
+
 
 /********************************************
 type funcs
