@@ -19,8 +19,8 @@ misc. mess assigns
 navigation assigns
 *******************************************/
 int inputChoice();
-int addOneChosen();
-void addAllChosen();
+int addOneChosen(int today);
+int addAllChosen(int today);
 void statsChosen();
 void printChosen();
 void insightsChosen();
@@ -75,7 +75,7 @@ float avgDelta(int brand);
 data cube assigns
 *******************************************/
 int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES];
-int inputData();
+int inputData(int today);
 
 /********************************************
 brand funcs
@@ -158,18 +158,15 @@ int main(){
 		switch(choice){
 			case addOne:
 			{
-				if (addOneChosen()==EOF) goto term;
+				int today=(latestDay==NONE) ?INITIAL :latestDay;
+				if (addOneChosen(today)==EOF) goto term;
 			break;
 			}
 			case addAll:
 			{
-				int today = (latestDay == NONE) ?INITIAL :latestDay;
-				printf("No data for brands");
-				for(int brand=INITIAL; brand<NUM_OF_BRANDS; brand++){
-					if (cube[today][brand][INITIAL]==NONE) printf(" %s", brands[brand]);
-				}
-				printf("\nPlease complete the data\n");
-				printf("DEBUG: GET DATA\n");
+				int today=(latestDay==NONE) ?INITIAL :latestDay;
+				if (addAllChosen(today)==EOF) goto term;
+				
 			break;
 			}
 			case stats:
@@ -282,14 +279,22 @@ int inputDay(){
 	} scanf("%*[^\n]"); day=temp; return day;
 }
 
-int inputData(){
+int noticeNoData(int today){
+	printf("No data for brands");
+	for(int brand=INITIAL; brand<NUM_OF_BRANDS; brand++){
+		if(cube[today][brand][INITIAL]==NONE)
+			printf(" %s", brands[brand]);
+	}
+	printf("\nPlease complete the data\n");
+	return 1;
+}
+
+int inputData(int today){
 	int input=0, tempBrand=-1, tempST[NUM_OF_TYPES]={-1, -1, -1, -1};
 	// MAGIC: !=5
-	while(
-		printf("DEBUG: PROMPT\n")
+	while(noticeNoData(today)
 		&&((input=scanf(" %d %d %d %d %d", &tempBrand, &tempST[0], &tempST[1], &tempST[2], &tempST[3])) !=5
-		||tempBrand<0 ||tempBrand>=NUM_OF_BRANDS
-		||tempST[0]<0 ||tempST[1]<0 ||tempST[2]<0 ||tempST[3]<0
+		||tempBrand<0 ||tempBrand>=NUM_OF_BRANDS ||tempST[0]<0 ||tempST[1]<0 ||tempST[2]<0 ||tempST[3]<0
 	)){
 		if(input==EOF) return EOF;
 		scanf("%*[^\n]"); printf("This brand is not valid\n");
@@ -308,14 +313,20 @@ int inputData(){
 /********************************************
 addOne funcs
 *******************************************/
-int addOneChosen(){
-	return (inputData()==EOF) ?EOF :1;  // MAGIC
+int addOneChosen(int today){
+	return (inputData(today)==EOF) ?EOF :1;  // MAGIC
 }
 
 /********************************************
 addAll funcs
 *******************************************/
-void addAllChosen(){}
+int addAllChosen(int today){
+	int types=NUM_OF_TYPES;
+	while(types>0){
+		if(inputData(today)==EOF) return EOF;
+	}
+	return 1;  // MAGIC
+}
 
 /********************************************
 stats funcs
