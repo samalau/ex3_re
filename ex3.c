@@ -16,29 +16,6 @@ misc. mess assigns
 #define mSIZE 2
 
 /********************************************
-navigation assigns
-*******************************************/
-int inputChoice();
-int addOneChosen(int today);
-int addAllChosen(int today);
-void statsChosen();
-void printChosen();
-void insightsChosen();
-void deltasChosen();
-int choice;
-
-/********************************************
-path assigns
-*******************************************/
-#define addOne  1
-#define addAll  2  
-#define stats  3
-#define print  4
-#define insights  5
-#define deltas  6
-#define done  7
-
-/********************************************
 brand assigns
 *******************************************/
 #define NUM_OF_BRANDS 5
@@ -74,8 +51,32 @@ float avgDelta(int brand);
 /********************************************
 data cube assigns
 *******************************************/
-int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES];
-int inputData(int today);
+// int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES];
+void init(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
+int inputData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES], int today);
+
+/********************************************
+navigation assigns
+*******************************************/
+int inputChoice();
+int addOneChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES], int today);
+int addAllChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES], int today);
+void statsChosen();
+void printChosen();
+void insightsChosen();
+void deltasChosen();
+int choice;
+
+/********************************************
+path assigns
+*******************************************/
+#define addOne  1
+#define addAll  2  
+#define stats  3
+#define print  4
+#define insights  5
+#define deltas  6
+#define done  7
 
 /********************************************
 brand funcs
@@ -92,14 +93,11 @@ int bestDay(){
 }
 
 void getLatestDay(){
-	// int temp=NONE;
 	for(int brand=INITIAL; brand<NUM_OF_BRANDS; brand++){
 		if(days[brand]>latestDay) {
 			latestDay=days[brand];
-			// temp=days[brand];
 		}
-	}// return temp;
-	latestDay=99; // DEBUG
+	}
 }
 
 void displayDay(int brand){
@@ -110,7 +108,7 @@ void displayDay(int brand){
 			for(int brand=INITIAL; brand<NUM_OF_BRANDS; brand++){
 				for(int type=INITIAL; type<NUM_OF_TYPES; type++){
 					printf(" %s: ", types[day]);
-}}}}}
+}  }   }   }  }
 
 /********************************************
 type funcs
@@ -135,13 +133,16 @@ float avgDelta(int brand){
 /********************************************
 initialize funcs
 *******************************************/
-void init(){
+void init(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 	for(int day=INITIAL; day<DAYS_IN_YEAR; day++){
 		mostSales[day][mAMOUNT]=mostSales[day][mBRAND]=NONE;
 		mostType[day][mAMOUNT]=mostType[day][mBRAND]=NONE;
-		for(int brand=INITIAL; brand<NUM_OF_BRANDS; brand++){days[brand]=NONE;
-			for(int type=INITIAL; type<NUM_OF_TYPES; type++){cube[day][brand][type]=NONE;}
-		}
+		for(int brand=INITIAL; brand<NUM_OF_BRANDS; brand++){
+			days[brand]=NONE;
+			for(int type=INITIAL; type<NUM_OF_TYPES; type++){
+				cube[day][brand][type]=NONE;
+				printf("DEBUG: (init) cube[day][brand][type] = %d\n", cube[day][brand][type]);
+		}  }
 	}
 }
 
@@ -149,29 +150,30 @@ void init(){
 navigate funcs
 *******************************************/
 int main(){
-	init();
+	int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES];
+	init(cube);
 	while((inputChoice())!=done){
-		printf("DEBUG: (0)latestDay is %d\n", latestDay);
+		// printf("DEBUG: (0)latestDay is %d\n", latestDay);
 		getLatestDay();
-		printf("DEBUG: (1)latestDay is %d\n", latestDay);
-		printf("choice = %d\n", choice);
+		// printf("DEBUG: (1)latestDay is %d\n", latestDay);
+		// printf("choice = %d\n", choice);
 		switch(choice){
 			case addOne:
 			{
 				int today=(latestDay==NONE) ?INITIAL :latestDay;
-				if (addOneChosen(today)==EOF) goto term;
+				if (addOneChosen(cube, today)==EOF) goto term;
 			break;
 			}
 			case addAll:
 			{
 				int today=(latestDay==NONE) ?INITIAL :latestDay;
-				if (addAllChosen(today)==EOF) goto term;
+				if (addAllChosen(cube, today)==EOF) goto term;
 				
 			break;
 			}
 			case stats:
 			{
-				int day=NONE;//, totalSum=NONE;
+				int day=NONE; // totalSum=NONE;
 				if(latestDay==NONE && printf("DEBUG: LATEST\n")) break;
 				day=inputDay();
 				if (day==EOF) goto term;
@@ -193,11 +195,17 @@ int main(){
 			}
 			case print:
 			{
-				int brand=NONE;
-				while(++brand<NUM_OF_BRANDS){
+				int brand=0;  // MAGIC
+				printf("(0)FUCK YOU\n");
+				while(brand++<NUM_OF_BRANDS){
+					printf("(1)FUCK YOU\n");
 					printf("Sales for %s:\n", brands[brand]);
-					if(days[brand]==NONE) continue;
-					displayDay(brand);
+					printf("(2)FUCK YOU\n");
+					if(days[brand]>NONE) {
+						printf("(3)FUCK YOU\n");
+						displayDay(brand);
+					}  // DEBUG: WHY NOT ENTERING??
+					printf("(4)FUCK YOU\n");
 				}
 			break;
 			}
@@ -279,7 +287,7 @@ int inputDay(){
 	} scanf("%*[^\n]"); day=temp; return day;
 }
 
-int noticeNoData(int today){
+int noticeNoData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES], int today){
 	printf("No data for brands");
 	for(int brand=INITIAL; brand<NUM_OF_BRANDS; brand++){
 		if(cube[today][brand][INITIAL]==NONE)
@@ -289,7 +297,7 @@ int noticeNoData(int today){
 	return 1;
 }
 
-int inputData(int today){
+int inputData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES], int today){
 	int input=0, tempBrand=-1, tempST[NUM_OF_TYPES]={-1, -1, -1, -1};
 	// MAGIC: !=5
 	while(noticeNoData(today)
@@ -304,8 +312,12 @@ int inputData(int today){
 	int brand=tempBrand;
 	int sales=0;  // MAGIC
 	for(int type=0; type<NUM_OF_TYPES; type++){
+		printf("DEBUG: (0)tempST[type] = %d\n", tempST[type]);
 		sales = tempST[type];
+		printf("DEBUG: (0)sales = %d\n", sales);
+		printf("DEBUG: (0)cube[latestDay][brand][type] = %d\n", cube[latestDay][brand][type]);
 		cube[latestDay][brand][type] = sales;
+		printf("DEBUG: (1)cube[latestDay][brand][type] = %d\n", cube[latestDay][brand][type]);
 	}
 	return 1;  // MAGIC
 }
@@ -313,18 +325,16 @@ int inputData(int today){
 /********************************************
 addOne funcs
 *******************************************/
-int addOneChosen(int today){
-	return (inputData(today)==EOF) ?EOF :1;  // MAGIC
+int addOneChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES], int today){
+	return (inputData(cube, today)==EOF) ?EOF :1;  // MAGIC
 }
 
 /********************************************
 addAll funcs
 *******************************************/
-int addAllChosen(int today){
+int addAllChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES], int today){
 	int types=NUM_OF_TYPES;
-	while(types>0){
-		if(inputData(today)==EOF) return EOF;
-	}
+	while(types>0){if(inputData(cube, today)==EOF) return EOF;}
 	return 1;  // MAGIC
 }
 
