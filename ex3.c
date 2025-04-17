@@ -152,10 +152,11 @@ void init(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 		mostSales[day][mAMOUNT]=mostSales[day][mBRAND]=NONE;
 		mostType[day][mAMOUNT]=mostType[day][mBRAND]=NONE;
 		for(int brand=INITIAL; brand<NUM_OF_BRANDS; brand++){
-			days[brand]=NONE;
+			if(day==INITIAL){
+				days[brand] = NONE;
+			}
 			for(int type=INITIAL; type<NUM_OF_TYPES; type++){
 				cube[day][brand][type]=NONE;
-				// printf("DEBUG: (init) cube[day][brand][type] = %d\n", cube[day][brand][type]);
 		}  }
 	}
 }
@@ -301,16 +302,6 @@ int inputDay(){
 }
 
 int noticeNoData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
-	// int today=earliestDay;
-	// for(int brand=INITIAL; brand<=NUM_OF_BRANDS; brand++){
-	// 	if(brand==NUM_OF_BRANDS){
-	// 		return 0;
-	// 	}else if(days[brand]>earliestDay &&cube[earliestDay][brand][INITIAL]<=NONE){
-	// 		break;
-	// 	}
-	// 	today=earliestDay+1;
-	// 	break;
-	// }
 	int today=earliestDay+1;
 	if (today<DAYS_IN_YEAR){
 		printf("No data for brands");
@@ -332,13 +323,11 @@ int inputData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 	for(int type=0; type<NUM_OF_TYPES; type++){
 		tempST[type]=NONE;
 	}
-	while(noticeNoData(cube)
-		&&((input=scanf(" %d %d %d %d %d", &tempBrand,
-			&tempST[0], &tempST[1], &tempST[2], &tempST[3]))
-		!=5 ||tempBrand<0 ||tempBrand>=NUM_OF_BRANDS
-		||tempST[0]<0 ||tempST[1]<0 ||tempST[2]<0 ||tempST[3]<0
-		||cube[today][tempBrand][INITIAL]!=NONE
-	)){  // MAGIC: 5
+	while((input=scanf(" %d %d %d %d %d", &tempBrand,
+	&tempST[0], &tempST[1], &tempST[2], &tempST[3]))!=5  // 5 = 1 (brand id) + 4 (types)
+	||tempBrand<0 ||tempBrand>=NUM_OF_BRANDS
+	||tempST[0]<0 ||tempST[1]<0 ||tempST[2]<0 ||tempST[3]<0
+	||cube[today][tempBrand][INITIAL]!=NONE){
 		if(input==EOF) return EOF;
 		scanf("%*[^\n]"); printf("This brand is not valid\n");
 		tempBrand=tempST[0]=tempST[1]=tempST[2]=tempST[3]=-1;
@@ -350,7 +339,7 @@ int inputData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 		sales=tempST[type];
 		cube[today][brand][type]=sales;
 	}
-	if (days[brand] < today) {days[brand] = today;}
+	days[brand] = days[brand] + 1;
 	return 1;
 }
 
@@ -379,7 +368,7 @@ int addOneChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 		sales = tempST[type];
 		cube[days[brand]+1][brand][type] = sales;
 	}
-	days[brand]++;
+	days[brand] = days[brand] + 1;
 	return 1;
 }
 
@@ -387,10 +376,8 @@ int addOneChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 addAll funcs
 *******************************************/
 int addAllChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
-	int brand=NUM_OF_BRANDS;
-	while(brand>0){
+	while(noticeNoData(cube)){
 		if(inputData(cube)==EOF) return EOF;
-		brand--;
 	} return 1;
 }
 
