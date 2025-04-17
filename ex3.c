@@ -319,9 +319,9 @@ int inputData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES], int today){
 		printf("DEBUG: (0)tempST[type] = %d\n", tempST[type]);
 		sales = tempST[type];
 		printf("DEBUG: (0)sales = %d\n", sales);
-		printf("DEBUG: (0)cube[latestDay][brand][type] = %d\n", cube[latestDay][brand][type]);
-		cube[latestDay][brand][type] = sales;
-		printf("DEBUG: (1)cube[latestDay][brand][type] = %d\n", cube[latestDay][brand][type]);
+		printf("DEBUG: (0)cube[latestDay][brand][type] = %d\n", cube[today][brand][type]);
+		cube[today][brand][type] = sales;
+		printf("DEBUG: (1)cube[latestDay][brand][type] = %d\n", cube[today][brand][type]);
 	}
 	return 1;
 }
@@ -330,7 +330,32 @@ int inputData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES], int today){
 addOne funcs
 *******************************************/
 int addOneChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES], int today){
-	return (inputData(cube, today)==EOF) ?EOF :1;  // MAGIC
+	// return (inputData(cube, today)==EOF) ?EOF :1;  // MAGIC
+	int input=0, tempBrand=NONE, tempST[NUM_OF_TYPES];
+	for(int i=0; i<NUM_OF_TYPES; i++){
+		tempST[i] = NONE;
+	}
+	// MAGIC: !=5
+	while(
+		((input=scanf(" %d %d %d %d %d", &tempBrand, &tempST[0], &tempST[1], &tempST[2], &tempST[3])) !=5
+		||tempBrand<0 ||tempBrand>=NUM_OF_BRANDS ||tempST[0]<0 ||tempST[1]<0 ||tempST[2]<0 ||tempST[3]<0
+	)){
+		if(input==EOF) return EOF;
+		scanf("%*[^\n]"); printf("This brand is not valid\n");
+		tempBrand=tempST[0]=tempST[1]=tempST[2]=tempST[3]=-1;
+	}
+	scanf("%*[^\n]");
+	int brand=tempBrand;
+	int sales=0;  // MAGIC
+	for(int type=0; type<NUM_OF_TYPES; type++){
+		printf("DEBUG: (0)tempST[type] = %d\n", tempST[type]);
+		sales = tempST[type];
+		printf("DEBUG: (0)sales = %d\n", sales);
+		printf("DEBUG: (0)cube[latestDay][brand][type] = %d\n", cube[today][brand][type]);
+		cube[today][brand][type] = sales;
+		printf("DEBUG: (1)cube[latestDay][brand][type] = %d\n", cube[today][brand][type]);
+	}
+	return 1;
 }
 
 /********************************************
@@ -338,7 +363,10 @@ addAll funcs
 *******************************************/
 int addAllChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES], int today){
 	int types=NUM_OF_TYPES;
-	while(types>0){if(inputData(cube, today)==EOF) return EOF;}
+	while(types>0){
+		if(inputData(cube, today)==EOF){
+			return EOF;
+	}  }
 	return 1;  // MAGIC
 }
 
