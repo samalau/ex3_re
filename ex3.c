@@ -96,7 +96,6 @@ int bestDay(){
 }
 
 void getEarliestDay(){
-	earliestDay = latestDay;
 	for(int brand=INITIAL; brand<NUM_OF_BRANDS; brand++){
 		if(days[brand]<earliestDay){
 			earliestDay=days[brand];
@@ -292,7 +291,9 @@ int inputChoice(){
 
 int inputDay(){
 	int day=NONE, temp=NONE, input=UNSELECTED;
-	while(printf("What day would you like to analyze?\n") &&((input=scanf(" %d", &temp)) != 1 ||temp<INITIAL ||temp>latestDay)){
+	while(printf("What day would you like to analyze?\n")
+		&&((input=scanf(" %d", &temp))
+	!=1 ||temp<INITIAL ||temp>latestDay)){
 		if(input==EOF) return EOF;
 		scanf("%*[^\n]"); printf("Please enter a valid day.\n"); temp=NONE;
 	} scanf("%*[^\n]"); day=temp; return day;
@@ -316,17 +317,24 @@ int noticeNoData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 			printf(" %s", brands[brand]);
 	}
 	printf("\nPlease complete the data\n");
-	return 1;
+	for(int brand=INITIAL; brand<NUM_OF_BRANDS; brand++){
+		if(cube[today][brand][INITIAL]==NONE)
+			return 1;
+	}
+	return 0;
 }
 
 int inputData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
-	int input=0, tempBrand=NONE, tempST[NUM_OF_TYPES];
+	int input=0, today=earliestDay+1, tempBrand=NONE, tempST[NUM_OF_TYPES];
 	for(int type=0; type<NUM_OF_TYPES; type++){
-		tempST[type] = NONE;
+		tempST[type]=NONE;
 	}
 	while(noticeNoData(cube)
-		&&((input=scanf(" %d %d %d %d %d", &tempBrand, &tempST[0], &tempST[1], &tempST[2], &tempST[3])) !=5
-		||tempBrand<0 ||tempBrand>=NUM_OF_BRANDS ||tempST[0]<0 ||tempST[1]<0 ||tempST[2]<0 ||tempST[3]<0
+		&&((input=scanf(" %d %d %d %d %d", &tempBrand,
+			&tempST[0], &tempST[1], &tempST[2], &tempST[3]))
+		!=5 ||tempBrand<0 ||tempBrand>=NUM_OF_BRANDS
+		||tempST[0]<0 ||tempST[1]<0 ||tempST[2]<0 ||tempST[3]<0
+		||cube[today][tempBrand][INITIAL]!=NONE
 	)){  // MAGIC: 5
 		if(input==EOF) return EOF;
 		scanf("%*[^\n]"); printf("This brand is not valid\n");
@@ -334,15 +342,11 @@ int inputData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 	}
 	scanf("%*[^\n]");
 	int brand=tempBrand;
-	int sales=0;  // MAGIC
+	int sales=NONE;
 	for(int type=0; type<NUM_OF_TYPES; type++){
-		// printf("DEBUG: (0)tempST[type] = %d\n", tempST[type]);
-		sales = tempST[type];
-		// printf("DEBUG: (0)sales = %d\n", sales);
-		// printf("DEBUG: (0)cube[latestDay][brand][type] = %d\n", cube[days[brand]+1][brand][type]);
-		// make days[brand]+1 actually minimum
-		cube[days[brand]+1][brand][type] = sales;
-		// printf("DEBUG: (1)cube[latestDay][brand][type] = %d\n", cube[days[brand]+1][brand][type]);
+		sales=tempST[type];
+		cube[today][brand][type]=sales;
+		days[brand]++;
 	}
 	return 1;
 }
@@ -357,7 +361,7 @@ int addOneChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 		tempST[i] = NONE;
 	}
 	// MAGIC: !=5
-	while(
+	while(  // debug: infinite, restrict to earliest day
 		((input=scanf(" %d %d %d %d %d", &tempBrand, &tempST[0], &tempST[1], &tempST[2], &tempST[3])) !=5
 		||tempBrand<0 ||tempBrand>=NUM_OF_BRANDS ||tempST[0]<0 ||tempST[1]<0 ||tempST[2]<0 ||tempST[3]<0
 	)){
@@ -380,12 +384,11 @@ int addOneChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 addAll funcs
 *******************************************/
 int addAllChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
-	int types=NUM_OF_TYPES;
-	while(types>0){
-		if(inputData(cube)==EOF){
-			return EOF;
-	}  }
-	return 1;  // MAGIC
+	int brand=NUM_OF_BRANDS;
+	while(brand>0){
+		if(inputData(cube)==EOF) return EOF;
+		brand--;
+	} return 1;
 }
 
 /********************************************
