@@ -104,10 +104,9 @@ void getLatestDay(){
 void displayDay(int brand){
 	for(int day=INITIAL; day<=days[brand]; day++){
 		printf("Day %d-", day+1);
-		for(int brand=INITIAL; brand<NUM_OF_BRANDS; brand++){
-			for(int type=INITIAL; type<NUM_OF_TYPES; type++){
-				printf(" %s: ", types[type]);
-		}}
+		for(int type=INITIAL; type<NUM_OF_TYPES; type++){
+			printf(" %s: ", types[type]);
+	}
 	printf("\n");
 }}
 
