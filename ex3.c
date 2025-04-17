@@ -145,7 +145,7 @@ void init(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 			days[brand]=NONE;
 			for(int type=INITIAL; type<NUM_OF_TYPES; type++){
 				cube[day][brand][type]=NONE;
-				printf("DEBUG: (init) cube[day][brand][type] = %d\n", cube[day][brand][type]);
+				// printf("DEBUG: (init) cube[day][brand][type] = %d\n", cube[day][brand][type]);
 		}  }
 	}
 }
@@ -173,14 +173,14 @@ int main(){
 				for(int brand=0; brand<NUM_OF_BRANDS; brand++){
 					if(days[brand]<DAYS_IN_YEAR-1)
 						if(addAllChosen(cube)==EOF) goto term;
-				printf("DEBUG: FULL DAYS\n");
+				// printf("DEBUG: FULL DAYS\n");
 				}
 			break;
 			}
 			case stats:
 			{
 				int day=NONE; // totalSum=NONE;
-				if(latestDay==NONE &&printf("DEBUG: LATEST\n")) break;
+				if(latestDay==NONE) break;
 				day=inputDay();
 				if(day==EOF) goto term;
 
@@ -280,7 +280,6 @@ int inputChoice(){
 }
 
 int inputDay(){
-	printf("DEBUG: (2)latestDay is %d\n", latestDay);
 	int day=NONE, temp=NONE, input=UNSELECTED;
 	while(printf("What day would you like to analyze?\n") &&((input=scanf(" %d", &temp)) != 1 ||temp<INITIAL ||temp>latestDay)){
 		if(input==EOF) return EOF;
@@ -316,13 +315,13 @@ int inputData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 	int brand=tempBrand;
 	int sales=0;  // MAGIC
 	for(int type=0; type<NUM_OF_TYPES; type++){
-		printf("DEBUG: (0)tempST[type] = %d\n", tempST[type]);
+		// printf("DEBUG: (0)tempST[type] = %d\n", tempST[type]);
 		sales = tempST[type];
-		printf("DEBUG: (0)sales = %d\n", sales);
-		printf("DEBUG: (0)cube[latestDay][brand][type] = %d\n", cube[days[brand]+1][brand][type]);
+		// printf("DEBUG: (0)sales = %d\n", sales);
+		// printf("DEBUG: (0)cube[latestDay][brand][type] = %d\n", cube[days[brand]+1][brand][type]);
 		// make days[brand]+1 actually minimum
 		cube[days[brand]+1][brand][type] = sales;
-		printf("DEBUG: (1)cube[latestDay][brand][type] = %d\n", cube[days[brand]+1][brand][type]);
+		// printf("DEBUG: (1)cube[latestDay][brand][type] = %d\n", cube[days[brand]+1][brand][type]);
 	}
 	return 1;
 }
