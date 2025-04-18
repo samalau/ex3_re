@@ -171,18 +171,16 @@ int main(){
 		switch(choice){
 			case addOne:
 			{
-				if(addOneChosen(cube)==EOF){
-					goto term;
-				}
+				if(inputData(cube)==EOF){goto term;}
 			break;
 			}
 			case addAll:
 			{
 				for(int brand=0; brand<NUM_OF_BRANDS; brand++){
-					printf("DEBUG: days[%d] = %d\n", brand, days[brand]);
 					if(days[brand]<DAYS_IN_YEAR-1){
-						if(addAllChosen(cube)==EOF)
-						goto term;
+						while(noticeNoData(cube)){
+							if(inputData(cube)==EOF){goto term;}
+						}
 					}
 				}
 			break;
@@ -192,9 +190,7 @@ int main(){
 				int day=NONE; // totalSum=NONE;
 				if(latestDay==NONE) break;
 				day=inputDay();
-				if(day==EOF){
-					goto term;
-				}
+				if(day==EOF){goto term;}
 
 				printf("DEBUG: In day number _:\n");
 				// printf("In day number %d:\n", day);
@@ -216,9 +212,7 @@ int main(){
 				int brand=INITIAL;
 				while(brand<NUM_OF_BRANDS){
 					printf("Sales for %s:\n", brands[brand]);
-					if(days[brand]>NONE){
-						displayData(brand, cube);
-					}
+					if(days[brand]>NONE){displayData(brand, cube);}
 					brand++;
 				}
 			break;
@@ -285,9 +279,13 @@ int printMenu(){
 input funcs
 *******************************************/
 int inputChoice(){
-	choice=UNSELECTED; int temp=UNSELECTED, input=UNSELECTED;
-	while(printMenu() &&((input=scanf(" %d", &temp)) != 1 ||temp<addOne ||temp>done)){
-		if(input==EOF){return done;}
+	choice=UNSELECTED;
+	int input=UNSELECTED, temp=UNSELECTED;
+	while(printMenu() &&((input=scanf(" %d", &temp)) != 1
+	||temp<addOne ||temp>done)){
+		if(input==EOF){
+			return done;
+		}
 		scanf("%*[^\n]");
 		printf("Invalid input\n");
 		temp=UNSELECTED;
@@ -300,8 +298,8 @@ int inputChoice(){
 int inputDay(){
 	int day=NONE, temp=NONE, input=UNSELECTED;
 	while(printf("What day would you like to analyze?\n")
-		&&((input=scanf(" %d", &temp))
-	!=1 ||temp<INITIAL ||temp>latestDay)){
+	&&((input=scanf(" %d", &temp))!=1
+	||temp<INITIAL ||temp>latestDay)){
 		if(input==EOF) return EOF;
 		scanf("%*[^\n]");
 		printf("Please enter a valid day.\n");
@@ -332,7 +330,9 @@ int noticeNoData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 
 int inputData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 	int input=0, today=earliestDay+1, tempBrand=NONE, tempST[NUM_OF_TYPES];
-	for(int type=INITIAL; type<NUM_OF_TYPES; type++){tempST[type]=NONE;}
+	for(int type=INITIAL; type<NUM_OF_TYPES; type++){
+		tempST[type]=NONE;
+	}
 	while((input=scanf(" %d %d %d %d %d", &tempBrand,
 	&tempST[0], &tempST[1], &tempST[2], &tempST[3]))!=5  // 5 = 1 (brand id) + 4 (types)
 	||tempBrand<0 ||tempBrand>=NUM_OF_BRANDS
@@ -351,23 +351,6 @@ int inputData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 		cube[today][brand][type]=sales;
 	}
 	days[brand]++;
-	return 1;
-}
-
-/********************************************
-addOne funcs
-*******************************************/
-int addOneChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
-	return inputData(cube);
-}
-
-/********************************************
-addAll funcs
-*******************************************/
-int addAllChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
-	while(noticeNoData(cube)){
-		if(inputData(cube)==EOF) return EOF;
-	}
 	return 1;
 }
 
