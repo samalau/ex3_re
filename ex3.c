@@ -202,7 +202,6 @@ int main(){
 							}
 						}
 					}
-					// int bestBrand=0, salesBrand=0;
 					for(int brand=0, bestBrand=0, salesBrand=0; brand<NUM_OF_BRANDS; brand++){
 						int tempSales=0;
 						for(int type=0; type<NUM_OF_TYPES; type++){
@@ -224,7 +223,7 @@ int main(){
 						int tempSales=0;
 						for(int brand=0; brand<NUM_OF_BRANDS; brand++){
 							tempSales+=cube[day][brand][type];
-							if(type==NUM_OF_TYPES-1){
+							if(brand==NUM_OF_BRANDS-1){
 								if(tempSales>salesType){
 									salesType=tempSales;
 									bestType=type;
