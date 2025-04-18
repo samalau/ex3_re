@@ -187,25 +187,43 @@ int main(){
 			}
 			case stats:
 			{
-				if(latestDay<0){break;}
+				if(latestDay<=NONE){break;}
 				int day=inputDay();
 				if(day==EOF){goto term;}
+
 				printf("In day number %d:\n", day+1);
-				
 				int total=0;
-				for(int type=0; type<NUM_OF_TYPES; type++){
-					for(int brand=0; brand<NUM_OF_BRANDS; brand++){
+				for(int brand=0; brand<NUM_OF_BRANDS; brand++){
+					for(int type=0; type<NUM_OF_TYPES; type++){
 						total+=cube[day][brand][type];
+						if(brand==NUM_OF_BRANDS-1 &&type==NUM_OF_TYPES-1){
+							printf("The sales total was %d\n", total);
+						}
 					}
 				}
-				printf("The sales total was %d\n", total);
-
-
-				printf("DEBUG: The best sold brand with _ sales was _\n");
-				// printf("The best sold brand with %d sales was %s\n",
-				// 	mostSales[day][mAMOUNT], brands[mostSales[day][mBRAND]]);
-
-				printf("DEBUG: The best sold type with _ sales was _\n");
+				int bestBrand=0, salesBrand=0;
+				for(int brand=0, tempSales=0; brand<NUM_OF_BRANDS; brand++){
+					for(int type=0; type<NUM_OF_TYPES; type++){
+						tempSales+=cube[day][brand][type];
+						if(type==NUM_OF_TYPES-1){
+							if(tempSales>salesBrand){
+								salesBrand=tempSales;
+								bestBrand=brand;
+							}
+							if(brand==NUM_OF_BRANDS-1){
+								printf("The best sold brand with %d sales was %s\n",
+									salesBrand,
+									brands[bestBrand]);
+							}
+						}
+					}
+					// if(tempSales>salesBrand){
+					// 	salesBrand=tempSales;
+					// 	bestBrand=brand;
+					// }
+				}
+				
+				
 				// printf("The best sold type with %d sales was %s\n",
 				// 	mostType[day][mAMOUNT], types[mostType[day][mBRAND]]);
 			break;
@@ -338,7 +356,7 @@ int noticeNoData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 			}	
 		}
 	}
-	return (foundMissing) ? printf("\nPlease complete the data\n") : 0;
+	return (foundMissing)?printf("\nPlease complete the data\n"):0;
 }
 
 int inputData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
