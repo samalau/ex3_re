@@ -62,7 +62,6 @@ void displayData(int brand, int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES])
 navigation assigns
 *******************************************/
 int inputChoice();
-int addOneChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
 int addAllChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
 int statsChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
 void printChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
@@ -171,30 +170,26 @@ int main(){
 		switch(choice){
 			case addOne:
 			{
-				if(inputData(cube)==EOF){
+				if(inputData(cube)==EOF)
 					goto term;
-				}
-				break;
+			break;
 			}
 			case addAll:
 			{
-				for(int brand=0; brand<NUM_OF_BRANDS, days[brand]<DAYS_IN_YEAR-1; brand++){
-					while(noticeNoData(cube)){
-						if(inputData(cube)==EOF){
-							goto term;
-				}}}
-				break;
+				if (addAllChosen(cube)==EOF)
+					goto term;
+			break;
 			}
 			case stats:
 			{
-				if(statsChosen(cube)==EOF){
+				if(statsChosen(cube)==EOF)
 					goto term;
-				}
-				break;
+			break;
 			}
-			case print: {
+			case print:
+			{
 				printChosen(cube);
-				break;
+			break;
 			}
 			case insights:
 			{
@@ -206,17 +201,17 @@ int main(){
 			case deltas:
 			{
 				deltasChosen(cube);
-				break;
+			break;
 			}
 			case done:
 			{
 				goto term;
-				break;
+			break;
 			}
 			default:
 			{
 				printf("Invalid input\n");
-				break;
+			break;
 			}
 		}
 	}
@@ -271,6 +266,9 @@ int inputDay(){
 	return day;
 }
 
+/********************************************
+add funcs
+*******************************************/
 int noticeNoData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 	int today=earliestDay+1, foundMissing=0;
 	if (today<DAYS_IN_YEAR){
@@ -287,6 +285,15 @@ int noticeNoData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 		}
 	}
 	return (foundMissing)?printf("\nPlease complete the data\n"):0;
+}
+
+int addAllChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
+	for(int brand=0; brand<NUM_OF_BRANDS, days[brand]<DAYS_IN_YEAR-1; brand++){
+		while(noticeNoData(cube)){
+			if(inputData(cube)==EOF){
+				return EOF;
+	}}}
+	return 1;
 }
 
 int inputData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
