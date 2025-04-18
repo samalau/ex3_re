@@ -190,7 +190,7 @@ int main(){
 				if(latestDay<0){break;}
 				int day=inputDay();
 				if(day==EOF){goto term;}
-				printf("In day number %d:\n", day);
+				printf("In day number %d:\n", day+1);
 				
 				int total=0;
 				for(int type=0; type<NUM_OF_TYPES; type++){
@@ -436,7 +436,5 @@ void deltasChosen(){}
 5
 4
 4
-6
-7
 END_INPUT
 */
