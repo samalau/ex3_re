@@ -238,12 +238,12 @@ int main(){
 			}
 			case deltas:
 			{
-				if(latestDay<=0){
+				if(latestDay<1){
 					for(int brand=INITIAL; brand<NUM_OF_BRANDS; brand++){
 						printf("Brand: %s, Average Delta: 0.000000\n", brands[brand]);
 					}
 				}else{
-					float daySum[NUM_OF_BRANDS] = 0;
+					float daySum[NUM_OF_BRANDS] = {0};
 					float count=latestDay-1;
 					for(int b=1, a=0; a<count; b++, a++){
 						for(int j=0; j<NUM_OF_TYPES; j++){
