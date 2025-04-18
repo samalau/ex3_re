@@ -238,12 +238,24 @@ int main(){
 			}
 			case deltas:
 			{
-				int brand=NONE;
-				while(++brand<NUM_OF_BRANDS){
-					printf("DEBUG: Brand: f u c k, Average Delta: y o u\n");
-					// printf("Brand: %s, Average Delta: %1.6f\n",
-					// 	brands[brand],
-					// 	avgDelta(brand));
+				if(latestDay<=0){
+					for(int brand=INITIAL; brand<NUM_OF_BRANDS; brand++){
+						printf("Brand: %s, Average Delta: 0.000000\n", brands[brand]);
+					}
+				}else{
+					float daySum[NUM_OF_BRANDS] = 0;
+					float count=latestDay-1;
+					for(int b=1, a=0; a<count; b++, a++){
+						for(int j=0; j<NUM_OF_TYPES; j++){
+							daySum[0]+=cube[b][0][j]-cube[a][0][j];
+							daySum[1]+=cube[b][1][j]-cube[a][1][j];
+							daySum[2]+=cube[b][2][j]-cube[a][2][j];
+							daySum[3]+=cube[b][3][j]-cube[a][3][j];
+						}
+					}
+					for(int brand=INITIAL; brand<NUM_OF_BRANDS; brand++){
+						printf("Brand: %s, Average Delta: %1.6f\n", brands[brand], daySum[brand]/count);
+					}
 				}
 			break;
 			}
@@ -373,3 +385,55 @@ void insightsChosen(){}
 deltas funcs
 *******************************************/
 void deltasChosen(){}
+
+
+/*
+2
+0
+1 1 1 1
+1
+2 1 1 1
+2
+1 1 1 3
+3
+1 1 1 1
+4
+1 1 1 1
+2
+0
+1 1 1 1
+1
+2 1 1 4
+2
+1 1 1 3
+3
+20 1 1 1
+4
+1 1 1 1
+2
+0
+1 1 1 1
+1
+2 1 3 1
+2
+1 1 1 3
+3
+1 1 1 1
+4
+1 1 1 1
+2
+0
+1 1 1 1
+1
+2 2 3 3
+2
+1 1 1 3
+3
+1 1 1 1
+4
+1 1 1 1
+4
+6
+7
+END_INPUT
+*/
