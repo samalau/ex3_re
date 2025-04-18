@@ -187,16 +187,19 @@ int main(){
 			}
 			case stats:
 			{
-				int day=NONE; // totalSum=NONE;
-				if(latestDay==NONE) break;
-				day=inputDay();
+				if(latestDay<0){break;}
+				int day=inputDay();
 				if(day==EOF){goto term;}
-
-				printf("DEBUG: In day number _:\n");
-				// printf("In day number %d:\n", day);
+				printf("In day number %d:\n", day);
 				
-				printf("DEBUG: The sales total was _\n");
-				// printf("The sales total was %d\n", totalSum);
+				int total=0;
+				for(int type=0; type<NUM_OF_TYPES; type++){
+					for(int brand=0; brand<NUM_OF_BRANDS; brand++){
+						total+=cube[day][brand][type];
+					}
+				}
+				printf("The sales total was %d\n", total);
+
 
 				printf("DEBUG: The best sold brand with _ sales was _\n");
 				// printf("The best sold brand with %d sales was %s\n",
@@ -244,17 +247,15 @@ int main(){
 					}
 				}else{
 					float daySum[NUM_OF_BRANDS] = {0};
-					float count=latestDay-1;
-					for(int b=1, a=0; a<count; b++, a++){
+					for(int b=1, a=0; a<latestDay; b++, a++){
 						for(int j=0; j<NUM_OF_TYPES; j++){
-							daySum[0]+=cube[b][0][j]-cube[a][0][j];
-							daySum[1]+=cube[b][1][j]-cube[a][1][j];
-							daySum[2]+=cube[b][2][j]-cube[a][2][j];
-							daySum[3]+=cube[b][3][j]-cube[a][3][j];
+							for(int k=0; k<NUM_OF_BRANDS; k++){
+								daySum[k]+=cube[b][k][j]-cube[a][k][j];
+							}
 						}
 					}
 					for(int brand=INITIAL; brand<NUM_OF_BRANDS; brand++){
-						printf("Brand: %s, Average Delta: %1.6f\n", brands[brand], daySum[brand]/count);
+						printf("Brand: %s, Average Delta: %1.6f\n", brands[brand], daySum[brand]/latestDay);
 					}
 				}
 			break;
@@ -308,17 +309,17 @@ int inputChoice(){
 }
 
 int inputDay(){
-	int day=NONE, temp=NONE, input=UNSELECTED;
+	int day=NONE, temp=NONE, input=UNSELECTED, min=1, max=latestDay+1;
 	while(printf("What day would you like to analyze?\n")
 	&&((input=scanf(" %d", &temp))!=1
-	||temp<INITIAL ||temp>latestDay)){
+	||temp<min ||temp>max)){
 		if(input==EOF) return EOF;
 		scanf("%*[^\n]");
 		printf("Please enter a valid day.\n");
 		temp=NONE;
 	}
 	scanf("%*[^\n]");
-	day=temp;
+	day=temp-1;
 	return day;
 }
 
@@ -386,7 +387,6 @@ deltas funcs
 *******************************************/
 void deltasChosen(){}
 
-
 /*
 2
 0
@@ -432,6 +432,9 @@ void deltasChosen(){}
 1 1 1 1
 4
 1 1 1 1
+3
+5
+4
 4
 6
 7
