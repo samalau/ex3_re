@@ -425,7 +425,7 @@ void insightsChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 			best=type;
 		}
 	}
-	printf("The best-selling type of car is %s: %d$\n", best, sales);
+	printf("The best-selling type of car is %s: %d$\n", types[best], sales);
 
 	best=0, sales=0;
 	for(int day=0; day<DAYS_IN_YEAR; day++){
