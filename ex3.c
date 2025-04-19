@@ -20,23 +20,25 @@ Assignment: ex3
 #define BRANDS_NAMES 15
 #define DAYS_IN_YEAR 365
 
-int days[NUM_OF_BRANDS];
-char brands[NUM_OF_BRANDS][BRANDS_NAMES]={"Toyoga", "HyunNight", "Mazduh", "FolksVegan", "Key-Yuh"};
-char types [NUM_OF_TYPES][TYPES_NAMES]={"SUV", "Sedan", "Coupe", "GT"};
-
 int choice;
 int earliestDay = NONE;
 int latestDay = NONE;
 
-int inputChoice();
+int days[NUM_OF_BRANDS];
+char brands[NUM_OF_BRANDS][BRANDS_NAMES]={"Toyoga", "HyunNight", "Mazduh", "FolksVegan", "Key-Yuh"};
+char types [NUM_OF_TYPES][TYPES_NAMES]={"SUV", "Sedan", "Coupe", "GT"};
+
+int printMenu();
 int inputDay();
+int inputChoice();
 int inputData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
 int noticeNoData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
 int addAllChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
 int statsChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
 int getSum(int day, int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
 int salesTotal(int path, int day, int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
-
+void getEarliestDay();
+void getLatestDay();
 void init(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
 void printChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
 void insightsChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
@@ -82,67 +84,6 @@ void init(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 			for(int type=0; type<NUM_OF_TYPES; type++){
 				cube[day][brand][type]=NONE;
 	}  }  }	
-}
-
-int main(){
-	int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES];
-	init(cube);
-	while((inputChoice())!=done){
-		getLatestDay();
-		getEarliestDay();
-		switch(choice){
-			case addOne:
-			{
-				if(inputData(cube)==EOF)
-					goto term;
-			break;
-			}
-			case addAll:
-			{
-				if (addAllChosen(cube)==EOF)
-					goto term;
-			break;
-			}
-			case stats:
-			{
-				if(latestDay>NONE
-				&&statsChosen(cube)==EOF){
-					goto term;
-				}
-			break;
-			}
-			case print:
-			{
-				printChosen(cube);
-			break;
-			}
-			case insights:
-			{
-				if(latestDay>NONE){
-					insightsChosen(cube);
-				}
-				break;
-			}
-			case deltas:
-			{
-				deltasChosen(cube);
-			break;
-			}
-			case done:
-			{
-				goto term;
-			break;
-			}
-			default:
-			{
-				printf("Invalid input\n");
-			break;
-			}
-		}
-	}
-	term:
-	printf("Goodbye!\n");
-	return 0;
 }
 
 int printMenu(){
@@ -386,4 +327,65 @@ void deltasChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 			printf("Brand: %s, Average Delta: %1.6f\n", brands[brand], daySum[brand]/latestDay);
 		}
 	}
+}
+
+int main(){
+	int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES];
+	init(cube);
+	while((inputChoice())!=done){
+		getLatestDay();
+		getEarliestDay();
+		switch(choice){
+			case addOne:
+			{
+				if(inputData(cube)==EOF)
+					goto term;
+			break;
+			}
+			case addAll:
+			{
+				if (addAllChosen(cube)==EOF)
+					goto term;
+			break;
+			}
+			case stats:
+			{
+				if(latestDay>NONE
+				&&statsChosen(cube)==EOF){
+					goto term;
+				}
+			break;
+			}
+			case print:
+			{
+				printChosen(cube);
+			break;
+			}
+			case insights:
+			{
+				if(latestDay>NONE){
+					insightsChosen(cube);
+				}
+				break;
+			}
+			case deltas:
+			{
+				deltasChosen(cube);
+			break;
+			}
+			case done:
+			{
+				goto term;
+			break;
+			}
+			default:
+			{
+				printf("Invalid input\n");
+			break;
+			}
+		}
+	}
+	term:
+	printf("Goodbye!\n");
+	return 0;
 }
