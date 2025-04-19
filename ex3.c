@@ -287,13 +287,13 @@ void getBest(int path, int i, int j, int day, int cube[DAYS_IN_YEAR][NUM_OF_BRAN
 				break;
 				}
 				case insights:{
-					for(int k=0; k<day; k++){
+					for(int k=0; k<latestDay+1; k++){
 						temp+=cube[k][a][b];
 					}
 				break;
 				}
 				default:
-					return;  // magic and also unsafe index in caller
+					return;  // todo: fix undefined
 			}
 		}
 		if(temp>sales){
