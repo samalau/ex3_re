@@ -250,11 +250,15 @@ int noticeNoData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 }
 
 int addAllChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
-	for(int brand=0; brand<NUM_OF_BRANDS, days[brand]<DAYS_IN_YEAR-1; brand++){
-		while(noticeNoData(cube)){
-			if(inputData(cube)==EOF){
-				return EOF;
-	}}}
+	for(int brand=0; brand<NUM_OF_BRANDS; brand++){
+		if(days[brand]<DAYS_IN_YEAR-1){
+			while(noticeNoData(cube)){
+				if(inputData(cube)==EOF){
+					return EOF;
+				}
+			}
+		}
+	}
 	return 1;
 }
 
@@ -515,5 +519,8 @@ void deltasChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 5
 4
 4
+5
+6
+7
 END_INPUT
 */
