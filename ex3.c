@@ -242,7 +242,7 @@ int salesTotal(int path, int day, int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_T
 					best=i;
 				}
 			}
-			printf("The most profitable day was day number %d: %d$\n", best, sales);
+			printf("The most profitable day was day number %d: %d$\n", best+1, sales);
 		break;
 		}
 		default:{
