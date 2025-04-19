@@ -1,5 +1,5 @@
 /******************
-Name:
+Name: Samantha Newmark
 ID:
 Assignment: ex3
 *******************/
