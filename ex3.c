@@ -5,78 +5,45 @@ Assignment: ex3
 *******************/
 #include <stdio.h>
 
-/********************************************
-misc. mess assigns
-*******************************************/
 #define NONE -1
 #define UNSELECTED 0
-
-/********************************************
-brand assigns
-*******************************************/
-#define NUM_OF_BRANDS 5
-#define BRANDS_NAMES 15
-char brands[NUM_OF_BRANDS][BRANDS_NAMES]={"Toyoga", "HyunNight", "Mazduh", "FolksVegan", "Key-Yuh"};
-
-/********************************************
-time assigns
-*******************************************/
-#define DAYS_IN_YEAR 365
-int days[NUM_OF_BRANDS];
-int earliestDay = NONE;
-int latestDay = NONE;
-int inputDay();
-
-/********************************************
-type assigns
-*******************************************/
-#define NUM_OF_TYPES 4
-#define TYPES_NAMES 10
-char types[NUM_OF_TYPES][TYPES_NAMES]={"SUV", "Sedan", "Coupe", "GT"};
-int mostType[DAYS_IN_YEAR][2];
-
-/********************************************
-sales assigns
-*******************************************/
-// int mostSales[DAYS_IN_YEAR][2];
-int salesTotal(int path, int day, int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
-int getSum(int day, int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
-void getBest(int path, int i, int j, int k, int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
-
-/********************************************
-data cube assigns
-*******************************************/
-// int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES];
-void init(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
-int inputData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
-int noticeNoData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
-void displayData(int brand, int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
-
-/********************************************
-navigation assigns
-*******************************************/
-int inputChoice();
-int addAllChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
-int statsChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
-void printChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
-void insightsChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
-void deltasChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
-int choice;
-
-/********************************************
-path assigns
-*******************************************/
 #define addOne  1
 #define addAll  2  
 #define stats  3
 #define print  4
+#define NUM_OF_TYPES 4
 #define insights  5
+#define NUM_OF_BRANDS 5
 #define deltas  6
 #define done  7
+#define TYPES_NAMES 10
+#define BRANDS_NAMES 15
+#define DAYS_IN_YEAR 365
 
-/********************************************
-time funcs
-*******************************************/
+int days[NUM_OF_BRANDS];
+char brands[NUM_OF_BRANDS][BRANDS_NAMES]={"Toyoga", "HyunNight", "Mazduh", "FolksVegan", "Key-Yuh"};
+char types [NUM_OF_TYPES][TYPES_NAMES]={"SUV", "Sedan", "Coupe", "GT"};
+
+int choice;
+int earliestDay = NONE;
+int latestDay = NONE;
+
+int inputChoice();
+int inputDay();
+int inputData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
+int noticeNoData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
+int addAllChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
+int statsChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
+int getSum(int day, int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
+int salesTotal(int path, int day, int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
+
+void init(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
+void printChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
+void insightsChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
+void deltasChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
+void displayData(int brand, int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
+void getBest(int path, int i, int j, int k, int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
+
 void getEarliestDay(){
 	earliestDay = DAYS_IN_YEAR;
 	for(int brand=0; brand<NUM_OF_BRANDS; brand++){
@@ -106,13 +73,8 @@ void displayData(int brand, int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES])
 	}
 }
 
-/********************************************
-initialize funcs
-*******************************************/
 void init(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 	for(int day=0; day<DAYS_IN_YEAR; day++){
-		// mostSales[day][0]=mostSales[day][1]=NONE;
-		// mostType[day][0]=mostType[day][1]=NONE;
 		for(int brand=0; brand<NUM_OF_BRANDS; brand++){
 			if(day==0){
 				days[brand] = NONE;
@@ -122,9 +84,6 @@ void init(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 	}  }  }	
 }
 
-/********************************************
-navigate funcs
-*******************************************/
 int main(){
 	int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES];
 	init(cube);
@@ -197,9 +156,6 @@ int printMenu(){
 	"7.exit\n");
 }
 
-/********************************************
-input funcs
-*******************************************/
 int inputChoice(){
 	choice=UNSELECTED;
 	int input=UNSELECTED, temp=UNSELECTED;
@@ -232,9 +188,6 @@ int inputDay(){
 	return day;
 }
 
-/********************************************
-add funcs
-*******************************************/
 int noticeNoData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 	int today=earliestDay+1, foundMissing=0;
 	if (today<DAYS_IN_YEAR){
@@ -292,9 +245,6 @@ int inputData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 	return 1;
 }
 
-/********************************************
-print funcs
-*******************************************/
 void printChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 	printf("*****************************************\n");
 	int brand=0;
@@ -308,9 +258,6 @@ void printChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 	printf("*****************************************\n");
 }
 
-/********************************************
-stats/insights funcs
-*******************************************/
 int statsChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 	int day=inputDay();
 	if(day==EOF)
@@ -421,9 +368,6 @@ void getBest(int path, int i, int j, int day, int cube[DAYS_IN_YEAR][NUM_OF_BRAN
 		:printf("The best-selling type of car is %s: %d$\n", types[best], sales)	:printf("");
 }
 
-/********************************************
-deltas funcs
-*******************************************/
 void deltasChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 	if(latestDay<1){
 		for(int brand=0; brand<NUM_OF_BRANDS; brand++){
