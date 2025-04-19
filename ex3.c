@@ -56,7 +56,7 @@ int inputChoice();
 int addAllChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
 int statsChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
 void printChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
-void insightsChosen();
+void insightsChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
 void deltasChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
 int choice;
 
@@ -142,8 +142,10 @@ int main(){
 			}
 			case stats:
 			{
-				if(statsChosen(cube)==EOF)
+				if(latestDay>NONE
+				&&statsChosen(cube)==EOF){
 					goto term;
+				}
 			break;
 			}
 			case print:
@@ -153,10 +155,10 @@ int main(){
 			}
 			case insights:
 			{
-				// printf("The best-selling brand overall is %s: %d$\n", _, _);
-				// printf("The best-selling type of car is %s: %d$\n", _, _);
-				// printf("The most profitable day was day number %d: %d$\n", _, _);
-			break;
+				if(latestDay>NONE){
+					insightsChosen(cube);
+				}
+				break;
 			}
 			case deltas:
 			{
@@ -346,70 +348,99 @@ stats/insights funcs
 // }
 
 int statsChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
-	if(latestDay>NONE){
-		int day=inputDay();
-		if(day==EOF)
-			return EOF;
-		printf("In day number %d:\n", day+1);
-		printf("The sales total was %d\n",
-					best(cube, day, TOTAL));
-		printf("The best sold brand with %d sales was %s\n",
-					best(cube, day, BRAND_SALES),
-					best(cube, day, BRAND));
-		printf("The best sold type with %d sales was %s\n",
-					best(cube, day, TYPE_SALES),
-					best(cube, day, TYPE));
-		// int total=0;
-		// for(int brand=0; brand<NUM_OF_BRANDS; brand++){
-		// 	for(int type=0; type<NUM_OF_TYPES; type++){
-		// 		total+=cube[day][brand][type];
-		// 	}
-		// }
-		// for(int brand=0, bestBrand=0, salesBrand=0; brand<NUM_OF_BRANDS; brand++){
-		// 	int tempSales=0;
-		// 	for(int type=0; type<NUM_OF_TYPES; type++){
-		// 		tempSales+=cube[day][brand][type];
-		// 		if(type==NUM_OF_TYPES-1){
-		// 			if(tempSales>salesBrand){
-		// 				salesBrand=tempSales;
-		// 				bestBrand=brand;
-		// 			}
-		// 			if(brand==NUM_OF_BRANDS-1){
-		// 				printf("The best sold brand with %d sales was %s\n",
-		// 					best(cube, SALES),
-		// 					best(cube, BRAND));
-		// 					// salesBrand,
-		// 					// brands[bestBrand]);
-		// 			}
-		// 		}
-		// 	}
-		// }
-		// for(int type=0, bestType=0, salesType=0; type<NUM_OF_TYPES; type++){
-		// 	int tempSales=0;
-		// 	for(int brand=0; brand<NUM_OF_BRANDS; brand++){
-		// 		tempSales+=cube[day][brand][type];
-		// 		if(brand==NUM_OF_BRANDS-1){
-		// 			if(tempSales>salesType){
-		// 				salesType=tempSales;
-		// 				bestType=type;
-		// 			}
-		// 			if(type==NUM_OF_TYPES-1){
-		// 				printf("The best sold type with %d sales was %s\n",
-		// 					salesType,
-		// 					types[bestType]);
-		// 			}
-		// 		}
-		// 	}
-		// }
+	int day=inputDay();
+	if(day==EOF)
+		{return EOF;}
+	printf("In day number %d:\n", day+1);
+	int total=0;
+	for(int brand=0; brand<NUM_OF_BRANDS; brand++){
+		for(int type=0; type<NUM_OF_TYPES; type++){
+			total+=cube[day][brand][type];
+		}
+	}
+	printf("The sales total was %d\n", total);
+	for(int brand=0, bestBrand=0, salesBrand=0; brand<NUM_OF_BRANDS; brand++){
+		int tempSales=0;
+		for(int type=0; type<NUM_OF_TYPES; type++){
+			tempSales+=cube[day][brand][type];
+			if(type==NUM_OF_TYPES-1){
+				if(tempSales>salesBrand){
+					salesBrand=tempSales;
+					bestBrand=brand;
+				}
+				if(brand==NUM_OF_BRANDS-1){
+					printf("The best sold brand with %d sales was %s\n",
+						salesBrand,
+						brands[bestBrand]);
+				}
+			}
+		}
+	}
+	for(int type=0, bestType=0, salesType=0; type<NUM_OF_TYPES; type++){
+		int tempSales=0;
+		for(int brand=0; brand<NUM_OF_BRANDS; brand++){
+			tempSales+=cube[day][brand][type];
+			if(brand==NUM_OF_BRANDS-1){
+				if(tempSales>salesType){
+					salesType=tempSales;
+					bestType=type;
+				}
+				if(type==NUM_OF_TYPES-1){
+					printf("The best sold type with %d sales was %s\n",
+						salesType,
+						types[bestType]);
+				}
+			}
+		}
 	}
 	return 1;
 }
-
-void insightsChosen(){
-
-	for(int day=0; day<DAYS_IN_YEAR; day++){
-		
+// combine redundant: stats, insights
+void insightsChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
+	int best=0, sales=0;
+	for(int brand=0; brand<NUM_OF_BRANDS; brand++){
+		int temp=0;
+		for(int day=0; day<DAYS_IN_YEAR; day++){
+			for(int type=0; type<NUM_OF_TYPES; type++){
+				temp+=cube[day][brand][type];
+			}
+		}
+		if(temp>sales){
+			sales=temp;
+			best=brand;
+		}
 	}
+	printf("The best-selling brand overall is %s: %d$\n", brands[best], sales);
+
+	best=0, sales=0;
+	for(int type=0; type<NUM_OF_TYPES; type++){
+		int temp=0;
+		for(int day=0; day<DAYS_IN_YEAR; day++){
+			for(int brand=0; brand<NUM_OF_BRANDS; brand++){
+				temp+=cube[day][brand][type];
+			}
+		}
+		if(temp>sales){
+			sales=temp;
+			best=type;
+		}
+	}
+	printf("The best-selling type of car is %s: %d$\n", best, sales);
+
+	best=0, sales=0;
+	for(int day=0; day<DAYS_IN_YEAR; day++){
+		int temp=0;
+		for(int type=0; type<NUM_OF_TYPES; type++){
+			for(int brand=0; brand<NUM_OF_BRANDS; brand++){
+				temp+=cube[day][brand][type];
+			}
+		}
+		if(temp>sales){
+			sales=temp;
+			best=day;
+		}
+	}
+	printf("The most profitable day was day number %d: %d$\n", best, sales);
 }
 
 /********************************************
