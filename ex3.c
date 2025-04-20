@@ -5,77 +5,107 @@ Assignment: ex3
 *******************/
 #include <stdio.h>
 
+
 #define NONE -1
+
 #define UNSELECTED 0
+
 #define addOne  1
+
 #define addAll  2  
+
 #define stats  3
+
 #define print  4
-#define NUM_OF_TYPES 4
+
 #define insights  5
-#define NUM_OF_BRANDS 5
+
 #define deltas  6
+
+// menu terminates program
 #define done  7
-#define TYPES_NAMES 10
-#define BRANDS_NAMES 15
+
 #define DAYS_IN_YEAR 365
 
-int choice;
+#define NUM_OF_BRANDS 5
+#define BRANDS_NAMES 15
+
+#define NUM_OF_TYPES 4
+#define TYPES_NAMES 10
+
+int menuChoice;
+
 int earliestDay = NONE;
+
 int latestDay = NONE;
 
 int days[NUM_OF_BRANDS];
+
+int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES];
+
 char brands[NUM_OF_BRANDS][BRANDS_NAMES]={"Toyoga", "HyunNight", "Mazduh", "FolksVegan", "Key-Yuh"};
+
 char types [NUM_OF_TYPES][TYPES_NAMES]={"SUV", "Sedan", "Coupe", "GT"};
 
 int printMenu();
+
 int inputDay();
+
 int inputChoice();
-int inputData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
-int noticeNoData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
-int addAllChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
-int statsChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
-int getSum(int day, int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
-int salesTotal(int path, int day, int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
+
+int inputData();
+
+int noticeNoData();
+
+int addAllChosen();
+
+int salesTotal(int day);
+
+void statsChosen(int day);
+
+void mostProfitableDay();
+
 void getEarliestDay();
+
 void getLatestDay();
-void init(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
-void printChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
-void insightsChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
-void deltasChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
-void displayData(int brand, int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
-int getBest(int path, int i, int j, int k, int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]);
+
+void init();
+
+void printChosen();
+
+void insightsChosen();
+
+void deltasChosen();
+
+void displayData(int brand);
+
+int checkBest(int day, int a, int b, int i, int j);
+
+void getBest(int path, int day, int i, int j);
 
 void getEarliestDay(){
 	earliestDay = DAYS_IN_YEAR;
 	for(int brand=0; brand<NUM_OF_BRANDS; brand++){
 		if(days[brand]<earliestDay){
 			earliestDay=days[brand];
-		}
-	}
-}
+}}}
 
 void getLatestDay(){
 	for(int brand=0; brand<NUM_OF_BRANDS; brand++){
 		if(days[brand]>latestDay){
 			latestDay=days[brand];
-		}
-	}
-}
+}}}
 
-void displayData(int brand, int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
+void displayData(int brand){
 	for(int day=0; day<=days[brand]; day++){
 		printf("Day %d-", day+1);
 		for(int type=0; type<NUM_OF_TYPES; type++){
-			printf(" %s: %d",
-				types[type],
-				cube[day][brand][type]);
+			printf(" %s: %d" ,types[type] ,cube[day][brand][type]);
 		}
 		printf("\n");
-	}
-}
+}}
 
-void init(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
+void init(){
 	for(int day=0; day<DAYS_IN_YEAR; day++){
 		for(int brand=0; brand<NUM_OF_BRANDS; brand++){
 			if(day==0){
@@ -83,8 +113,7 @@ void init(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 			}
 			for(int type=0; type<NUM_OF_TYPES; type++){
 				cube[day][brand][type]=NONE;
-	}  }  }	
-}
+}}}}
 
 int printMenu(){
 	return printf("Welcome to the Cars Data Cube! What would you like to do?\n"
@@ -98,28 +127,31 @@ int printMenu(){
 }
 
 int inputChoice(){
-	choice=UNSELECTED;
+	menuChoice=UNSELECTED;
 	int input=UNSELECTED, temp=UNSELECTED;
-	while(printMenu() &&((input=scanf(" %d", &temp)) != 1
-	||temp<addOne ||temp>done)){
-		if(input==EOF){
-			return done;
-		}
+	while(printMenu()
+	&&((input=scanf(" %d", &temp)) != 1
+	||temp<addOne
+	||temp>done)){
+		if(input==EOF) return done;
 		scanf("%*[^\n]");
 		printf("Invalid input\n");
 		temp=UNSELECTED;
 	}
 	scanf("%*[^\n]");
-	choice=temp;
-	return choice;
+	menuChoice=temp;
+	return menuChoice;
 }
 
 int inputDay(){
 	int day=NONE, temp=0, input=UNSELECTED, min=1, max=latestDay+1;
 	while(printf("What day would you like to analyze?\n")
 	&&((input=scanf(" %d", &temp))!=1
-	||temp<min ||temp>max)){
-		if(input==EOF) return EOF;
+	||temp<min
+	||temp>max)){
+		if(input==EOF){
+			return EOF;
+		}
 		scanf("%*[^\n]");
 		printf("Please enter a valid day.\n");
 		temp=NONE;
@@ -129,7 +161,7 @@ int inputDay(){
 	return day;
 }
 
-int noticeNoData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
+int noticeNoData(){
 	int today=earliestDay+1, foundMissing=0;
 	if (today<DAYS_IN_YEAR){
 		for(int brand=0; brand<NUM_OF_BRANDS; brand++){
@@ -141,26 +173,21 @@ int noticeNoData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 					continue;
 				}
 				printf(" %s", brands[brand]);
-			}	
-		}
-	}
+	}}}
 	return (foundMissing)?printf("\nPlease complete the data\n"):0;
 }
 
-int addAllChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
+int addAllChosen(){
 	for(int brand=0; brand<NUM_OF_BRANDS; brand++){
 		if(days[brand]<DAYS_IN_YEAR-1){
-			while(noticeNoData(cube)){
-				if(inputData(cube)==EOF){
+			while(noticeNoData()){
+				if(inputData()==EOF){
 					return EOF;
-				}
-			}
-		}
-	}
+	}}}}
 	return 1;
 }
 
-int inputData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
+int inputData(){
 	int input=0, today=earliestDay+1, tempBrand=NONE, tempST[NUM_OF_TYPES];
 	for(int type=0; type<NUM_OF_TYPES; type++){
 		tempST[type]=NONE;
@@ -186,104 +213,75 @@ int inputData(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 	return 1;
 }
 
-void printChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
+void printChosen(){
 	printf("*****************************************\n");
 	int brand=0;
 	while(brand<NUM_OF_BRANDS){
 		printf("Sales for %s:\n", brands[brand]);
 		if(days[brand]>NONE){
-			displayData(brand, cube);
-		}
-		brand++;
+			displayData(brand);
+		} brand++;
 	}
 	printf("*****************************************\n");
 }
 
-int statsChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
-	int day=inputDay();
-	if(day==EOF)
-		{return EOF;}
-	printf("In day number %d:\n", day+1);
-	salesTotal(stats, day, cube);
-	getBest(stats, NUM_OF_BRANDS, NUM_OF_TYPES, day, cube);
-	getBest(stats, NUM_OF_TYPES, NUM_OF_BRANDS, day, cube);
-	return 1;
+void statsChosen(int day){
+	printf("In day number %d:\nThe sales total was %d\n", day+1, salesTotal(day));
+	getBest(stats, day, NUM_OF_BRANDS, NUM_OF_TYPES);
+	getBest(stats, day, NUM_OF_TYPES, NUM_OF_BRANDS);
 }
 
-void insightsChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
-	getBest(insights, NUM_OF_BRANDS, NUM_OF_TYPES, latestDay, cube);
-	getBest(insights, NUM_OF_TYPES, NUM_OF_BRANDS, latestDay, cube);
-	salesTotal(insights, latestDay, cube);
+void insightsChosen(){
+	getBest(insights, latestDay, NUM_OF_BRANDS, NUM_OF_TYPES);
+	getBest(insights, latestDay, NUM_OF_TYPES, NUM_OF_BRANDS);
+	mostProfitableDay();
 }
 
-int getSum(int day, int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
+int salesTotal(int day){
 	int temp=0;
 	for(int i=0; i<NUM_OF_TYPES; i++){
 		for(int j=0; j<NUM_OF_BRANDS; j++){
 			if(cube[day][j][i]>NONE){
 				temp+=cube[day][j][i];
-			}	
-		}
-	}
+	}}}
 	return temp;
 }
 
-int salesTotal(int path, int day, int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
-	switch(path){
-		case stats:{
-			printf("The sales total was %d\n", getSum(day, cube));
-		break;
-		}
-		case insights:{
-			int temp=0, best=0, sales=0;
-			for(int i=0; i<day; i++){
-				if((temp=getSum(i, cube))>sales){
-					sales=temp;
-					best=i;
-				}
-			}
-			printf("The most profitable day was day number %d: %d$\n", best+1, sales);
-		break;
-		}
-		default:{
-			return -1;  // undefined
-		}
-	}
-	return -1;
+void mostProfitableDay(){
+	int temp=0, best=0, sales=0;
+	for(int i=0; i<latestDay; i++){
+		if((temp=salesTotal(i))>sales){
+			sales=temp;
+			best=i;
+	}}
+	printf("The most profitable day was day number %d: %d$\n", best+1, sales);
 }
 
-int getBest(int path, int i, int j, int day, int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
+int checkBest(int day, int a, int b, int i, int j){
+	if(cube[day][a][b]>NONE &&i==NUM_OF_BRANDS &&j==NUM_OF_TYPES){
+		return cube[day][a][b];
+	}else if(cube[day][b][a]>NONE &&i==NUM_OF_TYPES &&j==NUM_OF_BRANDS){
+		return cube[day][b][a];
+	}
+	return 0;
+}
+
+void getBest(int path, int day, int i, int j){
 	int best=0, sales=0;
 	for(int a=0; a<i; a++){
 		int temp=0;
 		for(int b=0; b<j; b++){
 			switch(path){
-				case stats:{
-					if(cube[day][a][b]>NONE &&j==NUM_OF_TYPES){
-						temp+=cube[day][a][b];
-						break;
+				case stats:
+					{temp+=checkBest(day, a, b, i, j);
+					break;}
+				case insights:
+					{for(int thisDay=0; thisDay<=day; thisDay++){
+						temp+=checkBest(thisDay, a, b, i, j);
 					}
-					if(cube[day][b][a]>NONE &&i==NUM_OF_TYPES){
-						temp+=cube[day][b][a];
-						break;
-					}
-				break;
-				}
-				case insights:{
-					for(int k=0; k<=day; k++){
-						if(cube[k][a][b]>NONE &&j==NUM_OF_TYPES){
-							temp+=cube[k][a][b];
-							continue;
-						}
-						if(cube[k][b][a]>NONE &&i==NUM_OF_TYPES){
-							temp+=cube[k][b][a];
-							continue;
-						}
-					}
-				break;
-				}
+					break;}
 				default:
-					return NONE;  // todo: fix undefined
+					{return;}
 			}
 		}
 		if(temp>sales){
@@ -291,15 +289,19 @@ int getBest(int path, int i, int j, int day, int cube[DAYS_IN_YEAR][NUM_OF_BRAND
 			best=a;
 		}
 	}
-	return  path==stats? (i == NUM_OF_BRANDS?
-					printf("The best sold brand with %d sales was %s\n" ,sales ,brands[best]):
-					printf("The best sold type with %d sales was %s\n" ,sales ,types[best])):
-				i == NUM_OF_BRANDS?
-					printf("The best-selling brand overall is %s: %d$\n" ,brands[best] ,sales):
-					printf("The best-selling type of car is %s: %d$\n" ,types[best] ,sales);
+	i==NUM_OF_BRANDS?
+		path==stats?
+		printf("The best sold brand with %d sales was %s\n" ,sales ,brands[best])
+// path==insights
+	:	printf("The best-selling brand overall is %s: %d$\n" ,brands[best] ,sales)
+	// i==NUM_OF_TYPES
+	:	path==stats?
+		printf("The best sold type with %d sales was %s\n" ,sales ,types[best])
+// path==insights
+	:	printf("The best-selling type of car is %s: %d$\n" ,types[best] ,sales);
 }
 
-void deltasChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
+void deltasChosen(){
 	if(latestDay<1){
 		for(int brand=0; brand<NUM_OF_BRANDS; brand++){
 			printf("Brand: %s, Average Delta: 0.000000\n", brands[brand]);
@@ -310,72 +312,51 @@ void deltasChosen(int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES]){
 			for(int j=0; j<NUM_OF_TYPES; j++){
 				for(int k=0; k<NUM_OF_BRANDS; k++){
 					daySum[k]+=cube[b][k][j]-cube[a][k][j];
-				}
-			}
-		}
+		}}}
 		for(int brand=0; brand<NUM_OF_BRANDS; brand++){
 			printf("Brand: %s, Average Delta: %1.6f\n", brands[brand], daySum[brand]/latestDay);
-		}
-	}
-}
+}}}
 
 int main(){
-	int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES];
-	init(cube);
+	init();
 	while((inputChoice())!=done){
 		getLatestDay();
 		getEarliestDay();
-		switch(choice){
+		switch(menuChoice){
 			case addOne:
-			{
-				if(inputData(cube)==EOF)
+				{if(inputData()==EOF){
 					goto term;
-			break;
-			}
+				}
+				break;}
 			case addAll:
-			{
-				if (addAllChosen(cube)==EOF)
+				{if (addAllChosen()==EOF){
 					goto term;
-			break;
-			}
+				}
+				break;}
 			case stats:
-			{
-				if(latestDay>NONE
-				&&statsChosen(cube)==EOF){
+				{int day=inputDay();
+				if(day==EOF){
 					goto term;
 				}
-			break;
-			}
+				statsChosen(day);
+				break;}
 			case print:
-			{
-				printChosen(cube);
-			break;
-			}
+				{printChosen();
+				break;}
 			case insights:
-			{
-				if(latestDay>NONE){
-					insightsChosen(cube);
+				{if(latestDay>NONE){
+					insightsChosen();
 				}
-				break;
-			}
+				break;}
 			case deltas:
-			{
-				deltasChosen(cube);
-			break;
-			}
+				{deltasChosen();
+				break;}
 			case done:
-			{
-				goto term;
-			break;
-			}
+				{goto term;}
 			default:
-			{
-				printf("Invalid input\n");
-			break;
-			}
-		}
-	}
-	term:
+				{printf("Invalid input\n");
+				break;}
+	}}term:
 	printf("Goodbye!\n");
 	return 0;
 }
