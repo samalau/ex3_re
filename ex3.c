@@ -5,82 +5,126 @@ Assignment: ex3
 *******************/
 #include <stdio.h>
 
+// no data
 #define NONE -1
 
+// menu unselected
 #define UNSELECTED 0
 
-#define addOne  1
+// menu choice: single day entry
+#define addOne 1
 
-#define addAll  2  
+// menu choice: full day entry
+#define addAll 2
 
-#define stats  3
+// menu choice: daily stats
+#define stats 3
 
-#define print  4
+// menu choice: print data
+#define print 4
 
-#define insights  5
+// menu choice: overall insights
+#define insights 5
 
-#define deltas  6
+// menu choice: average deltas
+#define deltas 6
 
-// menu terminates program
-#define done  7
+// menu choice: exit
+#define done 7
 
+// index: 0 to 364
 #define DAYS_IN_YEAR 365
 
+// number of brands
 #define NUM_OF_BRANDS 5
+
+// max brand name length
 #define BRANDS_NAMES 15
 
+// number of car types
 #define NUM_OF_TYPES 4
+
+// max type name length
 #define TYPES_NAMES 10
 
+// current main menu selection
 int menuChoice;
 
+//  earliest entered day overall
 int earliestDay = NONE;
 
+//  latest entered day overall
 int latestDay = NONE;
 
+// latest day entered per brand
 int days[NUM_OF_BRANDS];
 
+// sales data cube
 int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES];
 
-char brands[NUM_OF_BRANDS][BRANDS_NAMES]={"Toyoga", "HyunNight", "Mazduh", "FolksVegan", "Key-Yuh"};
+char brands[NUM_OF_BRANDS][BRANDS_NAMES]={
+	"Toyoga", "HyunNight", "Mazduh", "FolksVegan", "Key-Yuh"
+};
+char types [NUM_OF_TYPES][TYPES_NAMES]={
+	"SUV", "Sedan", "Coupe", "GT"
+};
 
-char types [NUM_OF_TYPES][TYPES_NAMES]={"SUV", "Sedan", "Coupe", "GT"};
 
-int printMenu();
+/*Prototypes*/
 
-int inputDay();
+//initialize data cube cells to -1
+void initCube();
 
+//display main menu options
+void printMenu();
+
+//select option from main menu
 int inputChoice();
 
-int inputData();
-
-int noticeNoData();
-
-int addAllChosen();
-
-int salesTotal(int day);
-
-void statsChosen(int day);
-
-void mostProfitableDay();
-
+//update global to overall earliest day with valid data 
 void getEarliestDay();
 
+//update global to overall latest day with valid data 
 void getLatestDay();
 
-void init();
+//get total sales of chosen day
+int salesTotal(int day);
 
-void printChosen();
+//get day with highest total sales 
+void mostProfitableDay();
 
+//user selected to complete data for earliest incomplete day
+int addAllChosen();
+
+//get sales data per type per brand of earliest incomplete day
+int inputData();
+
+//identify what data for current day remains incomplete during input
+int noticeNoData();
+
+//user selected to display stats of chosen day
+void statsChosen(int day);
+
+//user selected to display general stats
 void insightsChosen();
 
-void deltasChosen();
+//choose day to display stats
+int inputDay();
 
-void displayData(int brand);
-
+//get highest value of brand or type
 void getBest(int path, int day, int subject, int items);
 
-void getBest(int path, int day, int i, int j);
+//user selected to display all data
+void printChosen();
+
+//display all data
+void displayData(int brand);
+
+//user selected to display average delta of each brand
+void deltasChosen();
+
+
+/*Functions*/
 
 void getEarliestDay(){
 	earliestDay = DAYS_IN_YEAR;
@@ -104,7 +148,7 @@ void displayData(int brand){
 		printf("\n");
 }}
 
-void init(){
+void initCube(){
 	for(int day=0; day<DAYS_IN_YEAR; day++){
 		for(int brand=0; brand<NUM_OF_BRANDS; brand++){
 			if(day==0){
@@ -114,8 +158,8 @@ void init(){
 				cube[day][brand][type]=NONE;
 }}}}
 
-int printMenu(){
-	return printf("Welcome to the Cars Data Cube! What would you like to do?\n"
+void printMenu(){
+	printf("Welcome to the Cars Data Cube! What would you like to do?\n"
 	"1.Enter Daily Data For A Brand\n"
 	"2.Populate A Day Of Sales For All Brands\n"
 	"3.Provide Daily Stats\n"
@@ -128,14 +172,16 @@ int printMenu(){
 int inputChoice(){
 	menuChoice=UNSELECTED;
 	int input=UNSELECTED, temp=UNSELECTED;
-	while(printMenu()
-	&&((input=scanf(" %d", &temp)) != 1
-	||temp<addOne
-	||temp>done)){
-		if(input==EOF) return done;
+	while(
+		printMenu(),
+		input=scanf(" %d", &temp),
+		input!=1 ||temp<addOne ||temp>done
+	){
+		if(input==EOF){
+			return done;
+		}
 		scanf("%*[^\n]");
 		printf("Invalid input\n");
-		temp=UNSELECTED;
 	}
 	scanf("%*[^\n]");
 	menuChoice=temp;
@@ -302,7 +348,7 @@ void deltasChosen(){
 }}}
 
 int main(){
-	init();
+	initCube();
 	while((inputChoice())!=done){
 		getLatestDay();
 		getEarliestDay();
