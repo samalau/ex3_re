@@ -5,7 +5,6 @@ Assignment: ex3
 *******************/
 #include <stdio.h>
 
-
 #define NONE -1
 
 #define UNSELECTED 0
@@ -79,7 +78,7 @@ void deltasChosen();
 
 void displayData(int brand);
 
-int checkBest(int day, int a, int b, int i, int j);
+void getBest(int path, int day, int subject, int items);
 
 void getBest(int path, int day, int i, int j);
 
@@ -258,16 +257,17 @@ void mostProfitableDay(){
 }
 
 void getBest(int path, int day, int subject, int items){
+	int isStats=(path==stats), isBrand=(subject==NUM_OF_BRANDS);
 	int temp=0, best=0, sales=0, x=0, y=0;
-	int start=(path==stats)?day:0;
-	for(int a=0; a<subject; a++, temp=0){
+	int start=isStats?day:0;
+	for(int a=0; a<subject; temp=0, a++){
 		for(int numDay=start; numDay<=day; numDay++){
-			for(int b=0; items==NUM_OF_TYPES?(x=a, y=b):(y=a, x=b), b<items; b++){
+			for(int b=0; isBrand?(x=a, y=b):(y=a, x=b), b<items; b++){
 				if(cube[numDay][x][y]>NONE){
 					temp+=cube[numDay][x][y];
 				}
 			}
-			if(path==stats){
+			if(isStats){
 				break;
 			}
 		}
@@ -276,12 +276,13 @@ void getBest(int path, int day, int subject, int items){
 			best=a;
 		}
 	}
-	path==stats ?subject==NUM_OF_BRANDS
-		?printf("The best sold brand with %d sales was %s\n",sales,brands[best])
-		:printf("The best sold type with %d sales was %s\n",sales,types[best])
-	:subject==NUM_OF_BRANDS // path==insights
-		?printf("The best-selling brand overall is %s: %d$\n",brands[best],sales)
-		:printf("The best-selling type of car is %s: %d$\n",types[best],sales);
+	isStats?isBrand?printf("The best sold brand with %d sales was %s\n",sales,brands[best])
+	// type
+	:	printf("The best sold type with %d sales was %s\n",sales,types[best])
+	// insights
+	:	isBrand?printf("The best-selling brand overall is %s: %d$\n",brands[best],sales)
+	// type
+	:	printf("The best-selling type of car is %s: %d$\n",types[best],sales);
 }
 
 void deltasChosen(){
