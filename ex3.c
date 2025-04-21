@@ -1,6 +1,6 @@
 /******************
 Name: Samantha Newmark
-ID:
+ID: 
 Assignment: ex3
 *******************/
 #include <stdio.h>
@@ -257,31 +257,18 @@ void mostProfitableDay(){
 	printf("The most profitable day was day number %d: %d$\n", best+1, sales);
 }
 
-int checkBest(int day, int a, int b, int i, int j){
-	if(cube[day][a][b]>NONE &&i==NUM_OF_BRANDS &&j==NUM_OF_TYPES){
-		return cube[day][a][b];
-	}else if(cube[day][b][a]>NONE &&i==NUM_OF_TYPES &&j==NUM_OF_BRANDS){
-		return cube[day][b][a];
-	}
-	return 0;
-}
-
-void getBest(int path, int day, int i, int j){
-	int best=0, sales=0;
-	for(int a=0; a<i; a++){
-		int temp=0;
-		for(int b=0; b<j; b++){
-			switch(path){
-				case stats:
-					{temp+=checkBest(day, a, b, i, j);
-					break;}
-				case insights:
-					{for(int thisDay=0; thisDay<=day; thisDay++){
-						temp+=checkBest(thisDay, a, b, i, j);
-					}
-					break;}
-				default:
-					{return;}
+void getBest(int path, int day, int subject, int items){
+	int temp=0, best=0, sales=0, x=0, y=0;
+	int start=(path==stats)?day:0;
+	for(int a=0; a<subject; a++, temp=0){
+		for(int numDay=start; numDay<=day; numDay++){
+			for(int b=0; items==NUM_OF_TYPES?(x=a, y=b):(y=a, x=b), b<items; b++){
+				if(cube[numDay][x][y]>NONE){
+					temp+=cube[numDay][x][y];
+				}
+			}
+			if(path==stats){
+				break;
 			}
 		}
 		if(temp>sales){
@@ -289,16 +276,12 @@ void getBest(int path, int day, int i, int j){
 			best=a;
 		}
 	}
-	i==NUM_OF_BRANDS?
-		path==stats?
-		printf("The best sold brand with %d sales was %s\n" ,sales ,brands[best])
-// path==insights
-	:	printf("The best-selling brand overall is %s: %d$\n" ,brands[best] ,sales)
-	// i==NUM_OF_TYPES
-	:	path==stats?
-		printf("The best sold type with %d sales was %s\n" ,sales ,types[best])
-// path==insights
-	:	printf("The best-selling type of car is %s: %d$\n" ,types[best] ,sales);
+	path==stats ?subject==NUM_OF_BRANDS
+		?printf("The best sold brand with %d sales was %s\n",sales,brands[best])
+		:printf("The best sold type with %d sales was %s\n",sales,types[best])
+	:subject==NUM_OF_BRANDS // path==insights
+		?printf("The best-selling brand overall is %s: %d$\n",brands[best],sales)
+		:printf("The best-selling type of car is %s: %d$\n",types[best],sales);
 }
 
 void deltasChosen(){
