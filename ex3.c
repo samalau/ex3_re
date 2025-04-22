@@ -63,10 +63,10 @@ int days[NUM_OF_BRANDS];
 int cube[DAYS_IN_YEAR][NUM_OF_BRANDS][NUM_OF_TYPES];
 
 char brands[NUM_OF_BRANDS][BRANDS_NAMES]={
-	"Toyoga", "HyunNight", "Mazduh", "FolksVegan", "Key-Yuh"
+	"Toyoga","HyunNight","Mazduh","FolksVegan","Key-Yuh"
 };
 char types [NUM_OF_TYPES][TYPES_NAMES]={
-	"SUV", "Sedan", "Coupe", "GT"
+	"SUV","Sedan","Coupe","GT"
 };
 
 
@@ -112,7 +112,7 @@ void insightsChosen();
 int inputDay();
 
 //get highest value of brand or type
-void getBest(int path, int day, int subject, int items);
+void getBest(int path,int day,int subject,int items);
 
 //user selected to display all data
 void printChosen();
@@ -126,39 +126,54 @@ void deltasChosen();
 
 /*Functions*/
 
-void getEarliestDay(){
-	earliestDay = DAYS_IN_YEAR;
-	for(int brand=0; brand<NUM_OF_BRANDS; brand++){
-		if(days[brand]<earliestDay){
+void getEarliestDay()
+{
+	earliestDay=DAYS_IN_YEAR;
+	for(int brand=0;brand<NUM_OF_BRANDS;brand++)
+	{
+		if(days[brand]<earliestDay)
+		{
 			earliestDay=days[brand];
 }}}
 
-void getLatestDay(){
-	for(int brand=0; brand<NUM_OF_BRANDS; brand++){
-		if(days[brand]>latestDay){
+void getLatestDay()
+{
+	for(int brand=0;brand<NUM_OF_BRANDS;brand++)
+	{
+		if(days[brand]>latestDay)
+		{
 			latestDay=days[brand];
 }}}
 
-void displayData(int brand){
-	for(int day=0; day<=days[brand]; day++){
-		printf("Day %d-", day+1);
-		for(int type=0; type<NUM_OF_TYPES; type++){
-			printf(" %s: %d" ,types[type] ,cube[day][brand][type]);
+void displayData(int brand)
+{
+	for(int day=0;day<=days[brand];day++)
+	{
+		printf("Day %d-",day+1);
+		for(int type=0;type<NUM_OF_TYPES;type++)
+		{
+			printf(" %s: %d",types[type],cube[day][brand][type]);
 		}
 		printf("\n");
 }}
 
-void initCube(){
-	for(int day=0; day<DAYS_IN_YEAR; day++){
-		for(int brand=0; brand<NUM_OF_BRANDS; brand++){
-			if(day==0){
+void initCube()
+{
+	for(int day=0;day<DAYS_IN_YEAR;day++)
+	{
+		for(int brand=0;brand<NUM_OF_BRANDS;brand++)
+		{
+			if(day==0)
+			{
 				days[brand] = NONE;
 			}
-			for(int type=0; type<NUM_OF_TYPES; type++){
+			for(int type=0;type<NUM_OF_TYPES;type++)
+			{
 				cube[day][brand][type]=NONE;
 }}}}
 
-void printMenu(){
+void printMenu()
+{
 	printf("Welcome to the Cars Data Cube! What would you like to do?\n"
 	"1.Enter Daily Data For A Brand\n"
 	"2.Populate A Day Of Sales For All Brands\n"
@@ -169,15 +184,16 @@ void printMenu(){
 	"7.exit\n");
 }
 
-int inputChoice(){
+int inputChoice()
+{
 	menuChoice=UNSELECTED;
-	int input=UNSELECTED, temp=UNSELECTED;
-	while(
-		printMenu(),
-		input=scanf(" %d", &temp),
-		input!=1 ||temp<addOne ||temp>done
+	int input=UNSELECTED,temp=UNSELECTED;
+	while(printMenu(),
+	input=scanf(" %d",&temp),
+	input!=1 ||temp<addOne ||temp>done
 	){
-		if(input==EOF){
+		if(input==EOF)
+		{
 			return done;
 		}
 		scanf("%*[^\n]");
@@ -188,13 +204,14 @@ int inputChoice(){
 	return menuChoice;
 }
 
-int inputDay(){
-	int day=NONE, temp=0, input=UNSELECTED, min=1, max=latestDay+1;
+int inputDay()
+{
+	int day=NONE,temp=0,input=UNSELECTED,min=1,max=latestDay+1;
 	while(printf("What day would you like to analyze?\n")
-	&&((input=scanf(" %d", &temp))!=1
-	||temp<min
-	||temp>max)){
-		if(input==EOF){
+	&&((input=scanf(" %d",&temp))!=1 ||temp<min ||temp>max
+	)){
+		if(input==EOF)
+		{
 			return EOF;
 		}
 		scanf("%*[^\n]");
@@ -206,43 +223,56 @@ int inputDay(){
 	return day;
 }
 
-int noticeNoData(){
-	int today=earliestDay+1, foundMissing=0;
-	if (today<DAYS_IN_YEAR){
-		for(int brand=0; brand<NUM_OF_BRANDS; brand++){
-			if(cube[today][brand][0]==NONE){
-				if(!foundMissing){
+int noticeNoData()
+{
+	int today=earliestDay+1,foundMissing=0;
+	if (today<DAYS_IN_YEAR)
+	{
+		for(int brand=0;brand<NUM_OF_BRANDS;brand++)
+		{
+			if(cube[today][brand][0]==NONE)
+			{
+				if(!foundMissing)
+				{
 					printf("No data for brands");
-					printf(" %s", brands[brand]);
+					printf(" %s",brands[brand]);
 					foundMissing=1;
 					continue;
 				}
-				printf(" %s", brands[brand]);
+				printf(" %s",brands[brand]);
 	}}}
 	return (foundMissing)?printf("\nPlease complete the data\n"):0;
 }
 
 int addAllChosen(){
-	for(int brand=0; brand<NUM_OF_BRANDS; brand++){
-		if(days[brand]<DAYS_IN_YEAR-1){
-			while(noticeNoData()){
-				if(inputData()==EOF){
+	for(int brand=0;brand<NUM_OF_BRANDS;brand++)
+	{
+		if(days[brand]<DAYS_IN_YEAR-1)
+		{
+			while(noticeNoData())
+			{
+				if(inputData()==EOF)
+				{
 					return EOF;
 	}}}}
 	return 1;
 }
 
 int inputData(){
-	int input=0, today=earliestDay+1, tempBrand=NONE, tempST[NUM_OF_TYPES];
-	for(int type=0; type<NUM_OF_TYPES; type++){
+	int input=0,today=earliestDay+1,tempBrand=NONE,tempST[NUM_OF_TYPES];
+	for(int type=0;type<NUM_OF_TYPES;type++)
+	{
 		tempST[type]=NONE;
 	}
-	while((input=scanf(" %d %d %d %d %d", &tempBrand,
-	&tempST[0], &tempST[1], &tempST[2], &tempST[3]))!=5  // 5 = 1 (brand id) + 4 (types)
+	while((input=scanf(" %d %d %d %d %d",&tempBrand,
+	&tempST[0],&tempST[1],&tempST[2],&tempST[3]))!=5  // 5 = 1 (brand id) + 4 (types)
 	||tempBrand<0 ||tempBrand>=NUM_OF_BRANDS
 	||tempST[0]<0 ||tempST[1]<0 ||tempST[2]<0 ||tempST[3]<0
-	||cube[today][tempBrand][0]!=NONE){
-		if(input==EOF) return EOF;
+	||cube[today][tempBrand][0]!=NONE)
+	{
+		if(input==EOF){
+			return EOF;
+		}
 		scanf("%*[^\n]");
 		printf("This brand is not valid\n");
 		tempBrand=tempST[0]=tempST[1]=tempST[2]=tempST[3]=NONE;
@@ -250,7 +280,8 @@ int inputData(){
 	scanf("%*[^\n]");
 	int brand=tempBrand;
 	int sales=NONE;
-	for(int type=0; type<NUM_OF_TYPES; type++){
+	for(int type=0;type<NUM_OF_TYPES;type++)
+	{
 		sales=tempST[type];
 		cube[today][brand][type]=sales;
 	}
@@ -261,63 +292,77 @@ int inputData(){
 void printChosen(){
 	printf("*****************************************\n");
 	int brand=0;
-	while(brand<NUM_OF_BRANDS){
-		printf("Sales for %s:\n", brands[brand]);
-		if(days[brand]>NONE){
+	while(brand<NUM_OF_BRANDS)
+	{
+		printf("Sales for %s:\n",brands[brand]);
+		if(days[brand]>NONE)
+		{
 			displayData(brand);
-		} brand++;
+		}
+		brand++;
 	}
 	printf("*****************************************\n");
 }
 
 void statsChosen(int day){
-	printf("In day number %d:\nThe sales total was %d\n", day+1, salesTotal(day));
-	getBest(stats, day, NUM_OF_BRANDS, NUM_OF_TYPES);
-	getBest(stats, day, NUM_OF_TYPES, NUM_OF_BRANDS);
+	printf("In day number %d:\nThe sales total was %d\n",day+1,salesTotal(day));
+	getBest(stats,day,NUM_OF_BRANDS,NUM_OF_TYPES);
+	getBest(stats,day,NUM_OF_TYPES,NUM_OF_BRANDS);
 }
 
 void insightsChosen(){
-	getBest(insights, latestDay, NUM_OF_BRANDS, NUM_OF_TYPES);
-	getBest(insights, latestDay, NUM_OF_TYPES, NUM_OF_BRANDS);
+	getBest(insights,latestDay,NUM_OF_BRANDS,NUM_OF_TYPES);
+	getBest(insights,latestDay,NUM_OF_TYPES,NUM_OF_BRANDS);
 	mostProfitableDay();
 }
 
 int salesTotal(int day){
 	int temp=0;
-	for(int i=0; i<NUM_OF_TYPES; i++){
-		for(int j=0; j<NUM_OF_BRANDS; j++){
-			if(cube[day][j][i]>NONE){
+	for(int i=0;i<NUM_OF_TYPES;i++)
+	{
+		for(int j=0;j<NUM_OF_BRANDS;j++)
+		{
+			if(cube[day][j][i]>NONE)
+			{
 				temp+=cube[day][j][i];
 	}}}
 	return temp;
 }
 
 void mostProfitableDay(){
-	int temp=0, best=0, sales=0;
-	for(int i=0; i<latestDay; i++){
-		if((temp=salesTotal(i))>sales){
+	int temp=0,best=0,sales=0;
+	for(int i=0;i<latestDay;i++)
+	{
+		if((temp=salesTotal(i))>sales)
+		{
 			sales=temp;
 			best=i;
 	}}
-	printf("The most profitable day was day number %d: %d$\n", best+1, sales);
+	printf("The most profitable day was day number %d: %d$\n",best+1,sales);
 }
 
-void getBest(int path, int day, int subject, int items){
-	int isStats=(path==stats), isBrand=(subject==NUM_OF_BRANDS);
-	int temp=0, best=0, sales=0, x=0, y=0;
+void getBest(int path,int day,int subject,int items){
+	int isStats=(path==stats),isBrand=(subject==NUM_OF_BRANDS);
+	int temp=0,best=0,sales=0,x=0,y=0;
 	int start=isStats?day:0;
-	for(int a=0; a<subject; temp=0, a++){
-		for(int numDay=start; numDay<=day; numDay++){
-			for(int b=0; isBrand?(x=a, y=b):(y=a, x=b), b<items; b++){
-				if(cube[numDay][x][y]>NONE){
+	for(int a=0;a<subject;temp=0,a++)
+	{
+		for(int numDay=start;numDay<=day;numDay++)
+		{
+			for(int b=0;isBrand?(x=a,y=b):(y=a,x=b),b<items;b++)
+			{
+				if(cube[numDay][x][y]>NONE)
+				{
 					temp+=cube[numDay][x][y];
 				}
 			}
-			if(isStats){
+			if(isStats)
+			{
 				break;
 			}
 		}
-		if(temp>sales){
+		if(temp>sales)
+		{
 			sales=temp;
 			best=a;
 		}
@@ -333,60 +378,79 @@ void getBest(int path, int day, int subject, int items){
 
 void deltasChosen(){
 	if(latestDay<1){
-		for(int brand=0; brand<NUM_OF_BRANDS; brand++){
-			printf("Brand: %s, Average Delta: 0.000000\n", brands[brand]);
+		for(int brand=0;brand<NUM_OF_BRANDS;brand++){
+			printf("Brand: %s, Average Delta: 0.000000\n",brands[brand]);
 		}
 	}else{
 		float daySum[NUM_OF_BRANDS] = {0};
-		for(int b=1, a=0; a<latestDay; b++, a++){
-			for(int j=0; j<NUM_OF_TYPES; j++){
-				for(int k=0; k<NUM_OF_BRANDS; k++){
+		for(int b=1,a=0;a<latestDay;b++,a++){
+			for(int j=0;j<NUM_OF_TYPES;j++){
+				for(int k=0;k<NUM_OF_BRANDS;k++){
 					daySum[k]+=cube[b][k][j]-cube[a][k][j];
 		}}}
-		for(int brand=0; brand<NUM_OF_BRANDS; brand++){
-			printf("Brand: %s, Average Delta: %1.6f\n", brands[brand], daySum[brand]/latestDay);
+		for(int brand=0;brand<NUM_OF_BRANDS;brand++){
+			printf("Brand: %s, Average Delta: %1.6f\n",brands[brand],daySum[brand]/latestDay);
 }}}
 
 int main(){
 	initCube();
-	while((inputChoice())!=done){
+	unsigned int go=1;
+	while(go &&(inputChoice())!=done){
 		getLatestDay();
 		getEarliestDay();
 		switch(menuChoice){
 			case addOne:
-				{if(inputData()==EOF){
-					goto term;
+			{
+				if(inputData()==EOF){
+					go=0;
 				}
-				break;}
+				break;
+			}
 			case addAll:
-				{if (addAllChosen()==EOF){
-					goto term;
+			{
+				if (addAllChosen()==EOF){
+					go=0;
 				}
-				break;}
+				break;
+			}
 			case stats:
-				{int day=inputDay();
+			{
+				int day=inputDay();
 				if(day==EOF){
-					goto term;
+					go=0;
+					break;
 				}
 				statsChosen(day);
-				break;}
+				break;
+			}
 			case print:
-				{printChosen();
-				break;}
+			{
+				printChosen();
+				break;
+			}
 			case insights:
-				{if(latestDay>NONE){
+			{
+				if(latestDay>NONE){
 					insightsChosen();
 				}
-				break;}
+				break;
+			}
 			case deltas:
-				{deltasChosen();
-				break;}
+			{
+				deltasChosen();
+				break;
+			}
 			case done:
-				{goto term;}
+			{
+				go=0;
+				break;
+			}
 			default:
-				{printf("Invalid input\n");
-				break;}
-	}}term:
+			{
+				printf("Invalid input\n");
+				break;
+			}
+	}}
 	printf("Goodbye!\n");
 	return 0;
 }
