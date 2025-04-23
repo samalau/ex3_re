@@ -367,24 +367,23 @@ void deltasChosen(){
 
 int main(){
 	initCube();
-	unsigned int go=1;
-	while(go &&(inputChoice())!=done){
+	while(menuChoice!=done &&(inputChoice())!=done){
 		getLatestDay();
 		getEarliestDay();
 		switch(menuChoice){
 			case addOne:{
 				if(inputData()==EOF){
-					go=0;
+					menuChoice=done;
 				}
 			break;
 			}case addAll:{
 				if(addAllChosen()==EOF){
-					go=0;
+					menuChoice=done;
 				}
 			break;
 			}case stats:{
 				int day=inputDay();
-				(day==EOF)?(go=0):statsChosen(day);
+				(day==EOF)?(menuChoice=done):statsChosen(day);
 			break;
 			}case print:{
 				printChosen();
@@ -398,7 +397,7 @@ int main(){
 				deltasChosen();
 			break;
 			}case done:{
-				go=0;
+				menuChoice=done;
 			break;
 			}default:{
 				printf("Invalid input\n");
