@@ -182,6 +182,7 @@ int inputChoice(){
 	int input=UNSELECTED, temp=UNSELECTED;
 	while(printMenu(), (input=scanf(" %d",&temp))!=1 ||temp<addOne ||temp>done){
 		if(input==EOF){
+			menuChoice=done;
 			return done;
 		}
 		scanf("%*[^\n]");
@@ -196,6 +197,7 @@ int inputDay(){
 	int day=NONE, temp=0, input=UNSELECTED, min=1, max=latestDay+1;
 	while(printf("What day would you like to analyze?\n") &&((input=scanf(" %d",&temp))!=1 ||temp<min ||temp>max)){
 		if(input==EOF){
+			menuChoice=done;
 			return EOF;
 		}
 		scanf("%*[^\n]");
@@ -230,6 +232,7 @@ int addAllChosen(){
 		if(days[brand]<DAYS_IN_YEAR-1){
 			while(noticeNoData()){
 				if(inputData()==EOF){
+					menuChoice=done;
 					return EOF;
 				}
 			}
@@ -252,6 +255,7 @@ int inputData(){
 	||cube[today][tempBrand][0]!=NONE)
 	{
 		if(input==EOF){
+			menuChoice=done;
 			return EOF;
 		}
 		scanf("%*[^\n]");
