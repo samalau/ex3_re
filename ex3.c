@@ -171,50 +171,53 @@ void inputSelection(){
 int main(){
 	initCube();
 	while(menuSelection!=done){
-		/* MAIN UPDATES */
-		inputSelection();
+		if(inputSelection(), menuSelection==done){
+			break;
+		}
 		getLatestDay();
 		getEarliestDay();
-
 		/* MAIN MENU */
 		switch(menuSelection){
-			case done: break;
-			case addOne: {
-				if(inputData()==EOF){
-					menuSelection=done;
-				}
-			break;
-			}
-			case addAll: {
+
+			case done:
+				break;
+
+			case addAll:
 				if(addAllChosen()==EOF){
 					menuSelection=done;
 				}
-			break;
-			}
+				break;
+			
 			case stats: {
-				int day=NONE;
-				day=inputDay();
-				day==EOF ?menuSelection=done :statsChosen(day);
-			break;
+				int day=inputDay();
+				day==EOF ? menuSelection=done : statsChosen(day);
+				break;
 			}
-			case print: {
+
+			case print:
 				printChosen();
-			break;
-			}
-			case insights: {
+				break;
+
+			case insights:
 				if(latestDay>NONE){
 					insightsChosen();
 				}
-			break;
-			}
-			case deltas: {
+				break;
+
+			case deltas:
 				deltasChosen();
-			break;
-			}
-			default: printf("Invalid input\n");
+				break;
+
+			case addOne:
+				if(inputData()==EOF){
+					menuSelection=done;
+				}
+				break;
+
+			default:
+				printf("Invalid input\n");
 		}
 	}
-	/* EXIT POINT*/
 	printf("Goodbye!\n");
 	return 0;
 }
@@ -250,7 +253,6 @@ int inputData(){
 
 	// (brand index) + ($ of each type)
 	int validInput=1+NUM_OF_TYPES;
-
 	while(
 		tempBrand=tempST[0]=tempST[1]=tempST[2]=tempST[3]=NONE,
 		(input=scanf(" %d %d %d %d %d", &tempBrand, &tempST[0], &tempST[1], &tempST[2], &tempST[3])) !=validInput
@@ -311,9 +313,7 @@ int noticeNoData(){
 
 	if(today<DAYS_IN_YEAR){
 		for(int brand=0; brand<NUM_OF_BRANDS; brand++){
-
 			if(cube[today][brand][0]==NONE){
-				
 				if(!foundMissing){
 					printf("No data for brands %s", brands[brand]);
 					foundMissing=1;
@@ -364,7 +364,6 @@ void getBest(int path, int day, int subject, int items){
 
 	for(int a=0; a<subject; temp=0, a++){
 		for(int numDay=start; numDay<=day; numDay++){
-
 			for(int b=0; isBrand?(x=a, y=b):(y=a, x=b), b<items; b++){
 				if(cube[numDay][x][y]>NONE){
 					temp+=cube[numDay][x][y];
@@ -373,13 +372,11 @@ void getBest(int path, int day, int subject, int items){
 			if(isStats){
 				break;
 			}
-
 		}
 		if(temp>sales){
 			sales=temp;
 			best=a;
 		}
-	
 	}
 	
 	isStats ? isBrand
@@ -402,7 +399,6 @@ int addAllChosen(){
 				}
 			}
 		}
-
 	}
 	return 1;
 }
@@ -466,17 +462,18 @@ void deltasChosen(){
 		for(int brand=0; brand<NUM_OF_BRANDS; brand++){
 			printf("Brand: %s, Average Delta: 0.000000\n", brands[brand]);
 		}
-	}else{
-		float daySum[NUM_OF_BRANDS]={0};
-		for(int b=1, a=0; a<latestDay; b++, a++){
-			for(int j=0; j<NUM_OF_TYPES; j++){
-				for(int k=0; k<NUM_OF_BRANDS; k++){
-					daySum[k]+=cube[b][k][j]-cube[a][k][j];
-				}
+		return;
+	}
+
+	float daySum[NUM_OF_BRANDS]={0};
+	for(int b=1, a=0; a<latestDay; b++, a++){
+		for(int j=0; j<NUM_OF_TYPES; j++){
+			for(int k=0; k<NUM_OF_BRANDS; k++){
+				daySum[k]+=cube[b][k][j]-cube[a][k][j];
 			}
 		}
-		for(int brand=0; brand<NUM_OF_BRANDS; brand++){
-			printf("Brand: %s, Average Delta: %1.6f\n", brands[brand], daySum[brand]/latestDay);
-		}
+	}
+	for(int brand=0; brand<NUM_OF_BRANDS; brand++){
+		printf("Brand: %s, Average Delta: %1.6f\n", brands[brand], daySum[brand]/latestDay);
 	}
 }
