@@ -402,6 +402,7 @@ int addAllChosen(){
 				}
 			}
 		}
+
 	}
 	return 1;
 }
@@ -412,7 +413,8 @@ void statsChosen(int day){
 	if(day==NONE-1){
 		printf("In day number 0:\nThe sales total was 0\n"
 			"The best sold brand with 0 sales was Toyoga\n"
-			"The best sold type with 0 sales was SUV\n");
+			"The best sold type with 0 sales was SUV\n"
+		);
 		return;
 	}
 	printf("In day number %d:\nThe sales total was %d\n", day+1, salesTotal(day));
@@ -435,8 +437,9 @@ void displayData(int brand){
 
 /* TASK 4 CHECKPOINT */
 void printChosen(){
-	printf("*****************************************\n");
 	int brand=0;
+	printf("*****************************************\n");
+
 	while(brand<NUM_OF_BRANDS){
 		printf("Sales for %s:\n", brands[brand]);
 		if(days[brand]>NONE){
@@ -444,6 +447,7 @@ void printChosen(){
 		}
 		brand++;
 	}
+	
 	printf("*****************************************\n");
 }
 
