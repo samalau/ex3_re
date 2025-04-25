@@ -287,7 +287,7 @@ void printChosen(){
 }
 
 void statsChosen(int day){
-	if(latestDay<=NONE){
+	if(day==NONE-1){
 		printf("In day number 0:\nThe sales total was 0\n"
 		"The best sold brand with 0 sales was Toyoga\n"
 		"The best sold type with 0 sales was SUV\n"
