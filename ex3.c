@@ -1,9 +1,8 @@
 /******************
 Name: Samantha Newmark
-ID:
+ID: 346587629
 Assignment: ex3
 *******************/
-
 #include <stdio.h>
 
 // no data
@@ -159,10 +158,8 @@ void inputSelection(){
 			menuSelection=done;
 			return;
 		}
-		scanf("%*[^\n]");
 		printf("Invalid input\n");
 	}
-	scanf("%*[^\n]");
 	menuSelection=temp;
 }
 
@@ -264,10 +261,8 @@ int inputData(){
 			menuSelection=done;
 			return EOF;
 		}
-		scanf("%*[^\n]");
 		printf("This brand is not valid\n");
 	}
-	scanf("%*[^\n]");
 	int brand=tempBrand;
 	int sales=NONE;
 
@@ -295,13 +290,11 @@ int inputDay(){
 			menuSelection=done;
 			return EOF;
 		}
-		scanf("%*[^\n]");
 		if(temp==UNSELECTED){
 			return NONE-1;
 		}
 		printf("Please enter a valid day.\n");
 	}
-	scanf("%*[^\n]");
 	day=temp-1;
 	return day;
 }
