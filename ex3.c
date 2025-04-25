@@ -1,6 +1,6 @@
 /******************
 Name: Samantha Newmark
-ID: 
+ID:
 Assignment: ex3
 *******************/
 #include <stdio.h>
@@ -152,8 +152,7 @@ void displayData(int brand){
 	}
 }
 
-void initCube()
-{
+void initCube(){
 	for(int day=0; day<DAYS_IN_YEAR; day++){
 		for(int brand=0; brand<NUM_OF_BRANDS; brand++){
 			if(day==0){
@@ -286,6 +285,13 @@ void printChosen(){
 }
 
 void statsChosen(int day){
+	if(latestDay<=NONE){
+		printf("In day number 0:\nThe sales total was 0\n"
+		"The best sold brand with 0 sales was Toyoga\n"
+		"The best sold type with 0 sales was SUV\n"
+		);
+		return;
+	}
 	printf("In day number %d:\nThe sales total was %d\n", day+1, salesTotal(day));
 	getBest(stats, day, NUM_OF_BRANDS, NUM_OF_TYPES);
 	getBest(stats, day, NUM_OF_TYPES, NUM_OF_BRANDS);
@@ -385,11 +391,12 @@ int main(){
 				}
 				break;
 			}case stats:{
-				if(latestDay>NONE){
-					int day=NONE;
-					day=inputDay();
-					day==EOF ?menuChoice=done :statsChosen(day);
+				int day=NONE;
+				if(latestDay<=NONE){
+
 				}
+				day=inputDay();
+				day==EOF ?menuChoice=done :statsChosen(day);
 				break;
 			}case print:{
 				printChosen();
