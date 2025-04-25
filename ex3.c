@@ -193,15 +193,17 @@ int inputChoice(){
 }
 
 int inputDay(){
-	int day=NONE, temp=UNSELECTED, input=UNSELECTED, last=latestDay+1;
-	while(printf("What day would you like to analyze?\n"), (input=scanf(" %d",&temp))!=1 ||temp<1 ||temp>last){
+	int day=NONE, temp=NONE, input=UNSELECTED, last=latestDay+1;
+	while(temp=NONE, printf("What day would you like to analyze?\n"), (input=scanf(" %d",&temp))!=1 ||temp<1 ||temp>last){
 		if(input==EOF){
 			menuChoice=done;
 			return EOF;
 		}
 		scanf("%*[^\n]");
+		if(temp==UNSELECTED){
+			return NONE-1;
+		}
 		printf("Please enter a valid day.\n");
-		temp=UNSELECTED;
 	}
 	scanf("%*[^\n]");
 	day=temp-1;
@@ -392,9 +394,6 @@ int main(){
 				break;
 			}case stats:{
 				int day=NONE;
-				if(latestDay<=NONE){
-
-				}
 				day=inputDay();
 				day==EOF ?menuChoice=done :statsChosen(day);
 				break;
