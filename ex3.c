@@ -1,6 +1,6 @@
 /******************
 Name: Samantha Newmark
-ID:
+ID: 
 Assignment: ex3
 *******************/
 #include <stdio.h>
@@ -194,15 +194,15 @@ int inputChoice(){
 }
 
 int inputDay(){
-	int day=NONE, temp=0, input=UNSELECTED, min=1, max=latestDay+1;
-	while(printf("What day would you like to analyze?\n") &&((input=scanf(" %d",&temp))!=1 ||temp<min ||temp>max)){
+	int day=NONE, temp=UNSELECTED, input=UNSELECTED, last=latestDay+1;
+	while(printf("What day would you like to analyze?\n"), (input=scanf(" %d",&temp))!=1 ||temp<1 ||temp>last){
 		if(input==EOF){
 			menuChoice=done;
 			return EOF;
 		}
 		scanf("%*[^\n]");
 		printf("Please enter a valid day.\n");
-		temp=NONE;
+		temp=UNSELECTED;
 	}
 	scanf("%*[^\n]");
 	day=temp-1;
@@ -215,8 +215,7 @@ int noticeNoData(){
 		for(int brand=0; brand<NUM_OF_BRANDS; brand++){
 			if(cube[today][brand][0]==NONE){
 				if(!foundMissing){
-					printf("No data for brands");
-					printf(" %s", brands[brand]);
+					printf("No data for brands %s", brands[brand]);
 					foundMissing=1;
 					continue;
 				}
@@ -379,30 +378,33 @@ int main(){
 				if(inputData()==EOF){
 					menuChoice=done;
 				}
-			break;
+				break;
 			}case addAll:{
 				if(addAllChosen()==EOF){
 					menuChoice=done;
 				}
-			break;
+				break;
 			}case stats:{
-				int day=inputDay();
-				(day==EOF)?(menuChoice=done):statsChosen(day);
-			break;
+				if(latestDay>NONE){
+					int day=NONE;
+					day=inputDay();
+					day==EOF ?menuChoice=done :statsChosen(day);
+				}
+				break;
 			}case print:{
 				printChosen();
-			break;
+				break;
 			}case insights:{
 				if(latestDay>NONE){
 					insightsChosen();
 				}
-			break;
+				break;
 			}case deltas:{
 				deltasChosen();
-			break;
+				break;
 			}case done:{
 				menuChoice=done;
-			break;
+				break;
 			}default:{
 				printf("Invalid input\n");
 				break;
