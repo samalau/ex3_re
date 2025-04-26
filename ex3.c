@@ -250,10 +250,10 @@ int inputData(){
 	}
 
 	// (brand index) + ($ of each type)
-	int validInput=1+NUM_OF_TYPES;
 	while(
 		tempBrand=tempST[0]=tempST[1]=tempST[2]=tempST[3]=NONE,
-		(input=scanf(" %d %d %d %d %d", &tempBrand, &tempST[0], &tempST[1], &tempST[2], &tempST[3])) !=validInput
+		((input=scanf(" %d", &tempBrand)) !=1
+		&&(input=scanf(" %d %d %d %d", &tempST[0], &tempST[1], &tempST[2], &tempST[3])) !=NUM_OF_TYPES)
 		||tempBrand<0 ||tempBrand>=NUM_OF_BRANDS
 		||tempST[0]<0 ||tempST[1]<0 ||tempST[2]<0 ||tempST[3]<0
 		||cube[today][tempBrand][0]!=NONE
@@ -264,6 +264,7 @@ int inputData(){
 		}
 		scanf("%*[^\n]");
 		printf("This brand is not valid\n");
+		return 1;
 	}
 	int brand=tempBrand;
 	int sales=NONE;
