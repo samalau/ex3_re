@@ -161,7 +161,7 @@ void inputSelection(){
 			menuSelection=done;
 			return;
 		}
-		scanf("%*[^\n]");
+		scanf("%*[^0-9 \n]");
 		printf("Invalid input\n");
 	}
 	menuSelection=temp;
@@ -178,7 +178,7 @@ int main(){
 
 		getLatestDay();
 		getEarliestDay();
-		
+
 		/* MAIN MENU */
 		switch(menuSelection){
 			case done:
@@ -266,7 +266,7 @@ int inputData(){
 			menuSelection=done;
 			return EOF;
 		}
-		scanf("%*[^\n]");
+		scanf("%*[^0-9 \n]");
 		printf("This brand is not valid\n");
 	}
 	int brand=tempBrand;
@@ -319,7 +319,7 @@ int inputDay(){
 		if(temp==UNSELECTED){
 			return NONE-1;
 		}
-		scanf("%*[^\n]");
+		scanf("%*[^0-9 \n]");
 		printf("Please enter a valid day.\n");
 	}
 	day=temp-1;
