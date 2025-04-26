@@ -153,7 +153,10 @@ void printMenu(){
 void inputSelection(){
 	menuSelection=UNSELECTED;
 	int input=UNSELECTED, temp=UNSELECTED;
-	while(printMenu(), (input=scanf(" %d",&temp))!=1 ||temp<addOne ||temp>done){
+	while(printMenu(),
+		(input=scanf(" %d",&temp))!=1
+		||temp<addOne ||temp>done
+	){
 		if(input==EOF){
 			menuSelection=done;
 			return;
@@ -250,13 +253,13 @@ int inputData(){
 	}
 
 	// (brand index) + ($ of each type)
-	while(
+	while(noticeNoData(),
 		tempBrand=tempST[0]=tempST[1]=tempST[2]=tempST[3]=NONE,
-		((input=scanf(" %d", &tempBrand)) !=1
-		&&(input=scanf(" %d %d %d %d", &tempST[0], &tempST[1], &tempST[2], &tempST[3])) !=NUM_OF_TYPES)
+		(input=scanf(" %d", &tempBrand))!=1
 		||tempBrand<0 ||tempBrand>=NUM_OF_BRANDS
-		||tempST[0]<0 ||tempST[1]<0 ||tempST[2]<0 ||tempST[3]<0
 		||cube[today][tempBrand][0]!=NONE
+		||(input=scanf(" %d %d %d %d", &tempST[0], &tempST[1], &tempST[2], &tempST[3])) !=NUM_OF_TYPES
+		||tempST[0]<0 ||tempST[1]<0 ||tempST[2]<0 ||tempST[3]<0
 	){
 		if(input==EOF){
 			menuSelection=done;
@@ -264,11 +267,10 @@ int inputData(){
 		}
 		scanf("%*[^\n]");
 		printf("This brand is not valid\n");
-		return 1;
 	}
 	int brand=tempBrand;
 	int sales=NONE;
-
+	
 	/* UPDATE CUBE */
 	for(int type=0; type<NUM_OF_TYPES; type++){
 		sales=tempST[type];
@@ -279,6 +281,25 @@ int inputData(){
 	return 1;
 }
 
+
+/* DAY WITH PARTIAL DATA IDENTIFICATION AND NOTIFICATION */
+int noticeNoData(){
+	int today=earliestDay+1, foundMissing=0;
+
+	if(today<DAYS_IN_YEAR){
+		for(int brand=0; brand<NUM_OF_BRANDS; brand++){
+			if(cube[today][brand][0]==NONE){
+				if(!foundMissing){
+					printf("No data for brands %s", brands[brand]);
+					foundMissing=1;
+					continue;
+				}
+				printf(" %s", brands[brand]);
+			}
+		}
+	}
+	return (foundMissing)?printf("\nPlease complete the data\n") :0;
+}
 
 /* SELECT DAY TO VIEW STATS*/
 int inputDay(){
@@ -303,34 +324,11 @@ int inputDay(){
 	return day;
 }
 
-
-/* DAY WITH PARTIAL DATA IDENTIFICATION AND NOTIFICATION */
-int noticeNoData(){
-	int today=earliestDay+1, foundMissing=0;
-
-	if(today<DAYS_IN_YEAR){
-		for(int brand=0; brand<NUM_OF_BRANDS; brand++){
-			if(cube[today][brand][0]==NONE){
-				if(!foundMissing){
-					printf("No data for brands %s", brands[brand]);
-					foundMissing=1;
-					continue;
-				}
-				printf(" %s", brands[brand]);
-			}
-		}
-	}
-	return (foundMissing)?printf("\nPlease complete the data\n") :0;
-}
-
-
 /* HELPER FOR TASK 3 & 5*/
 int salesTotal(int day){
 	int temp=0;
-
 	for(int i=0; i<NUM_OF_TYPES; i++){
 		for(int j=0; j<NUM_OF_BRANDS; j++){
-			
 			if(cube[day][j][i]>NONE){
 				temp+=cube[day][j][i];
 			}
@@ -375,7 +373,6 @@ void getBest(int path, int day, int subject, int items){
 			best=a;
 		}
 	}
-	
 	isStats ? isBrand
 		? printf("The best sold brand with %d sales was %s\n", sales, brands[best])
 		: printf("The best sold type with %d sales was %s\n", sales, types[best])
@@ -389,11 +386,9 @@ void getBest(int path, int day, int subject, int items){
 int addAllChosen(){
 	for(int brand=0; brand<NUM_OF_BRANDS; brand++){
 		if(days[brand]<DAYS_IN_YEAR-1){
-			while(noticeNoData()){
-				if(inputData()==EOF){
-					menuSelection=done;
-					return EOF;
-				}
+			if(inputData()==EOF){
+				menuSelection=done;
+				return EOF;
 			}
 		}
 	}
@@ -432,7 +427,6 @@ void displayData(int brand){
 void printChosen(){
 	int brand=0;
 	printf("*****************************************\n");
-
 	while(brand<NUM_OF_BRANDS){
 		printf("Sales for %s:\n", brands[brand]);
 		if(days[brand]>NONE){
@@ -440,7 +434,6 @@ void printChosen(){
 		}
 		brand++;
 	}
-	
 	printf("*****************************************\n");
 }
 
