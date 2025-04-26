@@ -175,11 +175,12 @@ int main(){
 		if(inputSelection(), menuSelection==done){
 			break;
 		}
+
 		getLatestDay();
 		getEarliestDay();
+		
 		/* MAIN MENU */
 		switch(menuSelection){
-
 			case done:
 				break;
 
@@ -270,7 +271,7 @@ int inputData(){
 	}
 	int brand=tempBrand;
 	int sales=NONE;
-	
+
 	/* UPDATE CUBE */
 	for(int type=0; type<NUM_OF_TYPES; type++){
 		sales=tempST[type];
@@ -301,6 +302,7 @@ int noticeNoData(){
 	return (foundMissing)?printf("\nPlease complete the data\n") :0;
 }
 
+
 /* SELECT DAY TO VIEW STATS*/
 int inputDay(){
 	int day=NONE, temp=NONE, input=UNSELECTED, last=latestDay+1;
@@ -323,6 +325,7 @@ int inputDay(){
 	day=temp-1;
 	return day;
 }
+
 
 /* HELPER FOR TASK 3 & 5*/
 int salesTotal(int day){
