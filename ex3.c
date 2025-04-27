@@ -1,6 +1,6 @@
 /******************
 Name: Samantha Newmark
-ID:
+ID: 346587629
 Assignment: ex3
 *******************/
 #include <stdio.h>
@@ -155,7 +155,8 @@ void inputSelection(){
 	int input=UNSELECTED, temp=UNSELECTED;
 	while(printMenu(),
 		(input=scanf(" %d",&temp))!=1
-		||temp<addOne ||temp>done
+		||temp<addOne
+		||temp>done
 	){
 		if(input==EOF){
 			menuSelection=done;
@@ -171,6 +172,9 @@ void inputSelection(){
 /* MAIN */
 int main(){
 	initCube();
+
+	int moreDays=1;
+
 	while(menuSelection!=done){
 		if(inputSelection(), menuSelection==done){
 			break;
@@ -178,6 +182,9 @@ int main(){
 
 		getLatestDay();
 		getEarliestDay();
+		if(latestDay==DAYS_IN_YEAR-1 &&earliestDay==latestDay){
+			moreDays=0;
+		}
 
 		/* MAIN MENU */
 		switch(menuSelection){
@@ -185,7 +192,7 @@ int main(){
 				break;
 
 			case addAll:
-				if(addAllChosen()==EOF){
+				if(moreDays &&addAllChosen()==EOF){
 					menuSelection=done;
 				}
 				break;
@@ -211,7 +218,7 @@ int main(){
 				break;
 
 			case addOne:
-				if(inputData()==EOF){
+				if(moreDays &&inputData()==EOF){
 					menuSelection=done;
 				}
 				break;
@@ -238,6 +245,7 @@ void getEarliestDay(){
 
 /* USE TO CHECK IF OVERALL LATEST DAY IS EXISTING AND VALID */
 void getLatestDay(){
+	latestDay=NONE;
 	for(int brand=0; brand<NUM_OF_BRANDS; brand++){
 		if(days[brand]>latestDay){
 			latestDay=days[brand];
@@ -248,19 +256,34 @@ void getLatestDay(){
 
 /* INPUT DATA WITH VALIDATION */
 int inputData(){
-	int input=0, today=earliestDay+1, tempBrand=NONE, tempST[NUM_OF_TYPES];
+	int
+		input=0,
+		today=earliestDay+1,
+		tempBrand=NONE,
+		tempST[NUM_OF_TYPES];
+	
 	for(int type=0; type<NUM_OF_TYPES; type++){
 		tempST[type]=NONE;
 	}
 
 	// (brand index) + ($ of each type)
-	while(noticeNoData(),
+	while(
 		tempBrand=tempST[0]=tempST[1]=tempST[2]=tempST[3]=NONE,
+		noticeNoData(),
 		(input=scanf(" %d", &tempBrand))!=1
-		||tempBrand<0 ||tempBrand>=NUM_OF_BRANDS
+		||tempBrand<0
+		||tempBrand>=NUM_OF_BRANDS
 		||cube[today][tempBrand][0]!=NONE
-		||(input=scanf(" %d %d %d %d", &tempST[0], &tempST[1], &tempST[2], &tempST[3])) !=NUM_OF_TYPES
-		||tempST[0]<0 ||tempST[1]<0 ||tempST[2]<0 ||tempST[3]<0
+		||(input=scanf(" %d %d %d %d",
+			&tempST[0],
+			&tempST[1],
+			&tempST[2],
+			&tempST[3])
+		) !=NUM_OF_TYPES
+		||tempST[0]<0
+		||tempST[1]<0
+		||tempST[2]<0
+		||tempST[3]<0
 	){
 		if(input==EOF){
 			menuSelection=done;
@@ -269,8 +292,9 @@ int inputData(){
 		scanf("%*[^0-9 \n]");
 		printf("This brand is not valid\n");
 	}
-	int brand=tempBrand;
-	int sales=NONE;
+	int
+		brand=tempBrand,
+		sales=NONE;
 
 	/* UPDATE CUBE */
 	for(int type=0; type<NUM_OF_TYPES; type++){
@@ -285,7 +309,9 @@ int inputData(){
 
 /* DAY WITH PARTIAL DATA IDENTIFICATION AND NOTIFICATION */
 int noticeNoData(){
-	int today=earliestDay+1, foundMissing=0;
+	int
+		today=earliestDay+1,
+		foundMissing=0;
 
 	if(today<DAYS_IN_YEAR){
 		for(int brand=0; brand<NUM_OF_BRANDS; brand++){
@@ -306,11 +332,11 @@ int noticeNoData(){
 /* SELECT DAY TO VIEW STATS*/
 int inputDay(){
 	int day=NONE, temp=NONE, input=UNSELECTED, last=latestDay+1;
-	while(
-		temp=NONE,
+	while(temp=NONE,
 		printf("What day would you like to analyze?\n"),
 		(input=scanf(" %d",&temp))!=1
-		||temp<1 ||temp>last
+		||temp<1
+		||temp>last
 	){
 		if(input==EOF){
 			menuSelection=done;
@@ -357,9 +383,13 @@ void mostProfitableDay(){
 
 /* HELPER FOR TASKS 3 & 5 */
 void getBest(int path, int day, int subject, int items){
-	int isStats=(path==stats), isBrand=(subject==NUM_OF_BRANDS), temp=0, best=0, sales=0, x=0, y=0;
-	int start=isStats?day:0;
+	int
+		isStats=(path==stats),
+		isBrand=(subject==NUM_OF_BRANDS),
+		temp=0, best=0, sales=0,
+		x=0, y=0;
 
+	int start=isStats?day:0;
 	for(int a=0; a<subject; temp=0, a++){
 		for(int numDay=start; numDay<=day; numDay++){
 			for(int b=0; isBrand?(x=a, y=b):(y=a, x=b), b<items; b++){
