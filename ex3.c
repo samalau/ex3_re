@@ -191,6 +191,9 @@ int main(){
 			case done:
 				break;
 
+			case addOne:
+				break;
+
 			case addAll:
 				if(moreDays &&addAllChosen()==EOF){
 					menuSelection=done;
@@ -208,19 +211,11 @@ int main(){
 				break;
 
 			case insights:
-				if(latestDay>NONE){
-					insightsChosen();
-				}
+				insightsChosen();
 				break;
 
 			case deltas:
 				deltasChosen();
-				break;
-
-			case addOne:
-				if(moreDays &&inputData()==EOF){
-					menuSelection=done;
-				}
 				break;
 
 			default:
@@ -369,11 +364,13 @@ int salesTotal(int day){
 
 /* HELPER FOR TASK 5 */
 void mostProfitableDay(){
-	int temp=0, best=0, sales=0;
+	int
+		sales=0,
+		best=0;
 
-	for(int i=0; i<latestDay; i++){
-		if((temp=salesTotal(i))>sales){
-			sales=temp;
+	for(int i=0; i<=latestDay; i++){
+		if(salesTotal(i)>sales){
+			sales=salesTotal(i);
 			best=i;
 		}
 	}
@@ -390,6 +387,7 @@ void getBest(int path, int day, int subject, int items){
 		x=0, y=0;
 
 	int start=isStats?day:0;
+
 	for(int a=0; a<subject; temp=0, a++){
 		for(int numDay=start; numDay<=day; numDay++){
 			for(int b=0; isBrand?(x=a, y=b):(y=a, x=b), b<items; b++){
@@ -433,9 +431,8 @@ int addAllChosen(){
 void statsChosen(int day){
 	if(day==NONE-1){
 		printf("In day number 0:\nThe sales total was 0\n"
-			"The best sold brand with 0 sales was Toyoga\n"
-			"The best sold type with 0 sales was SUV\n"
-		);
+		"The best sold brand with 0 sales was Toyoga\n"
+		"The best sold type with 0 sales was SUV\n");
 		return;
 	}
 	printf("In day number %d:\nThe sales total was %d\n", day+1, salesTotal(day));
@@ -473,6 +470,12 @@ void printChosen(){
 
 /* TASK 5 CHECKPOINT */
 void insightsChosen(){
+	if(latestDay==NONE){
+		printf("The best-selling brand overall is Toyoga: 0$\n"
+		"The best-selling type of car is SUV: 0$\n"
+		"The most profitable day was day number 1: 0$\n");
+		return;
+	}
 	getBest(insights, latestDay, NUM_OF_BRANDS, NUM_OF_TYPES);
 	getBest(insights, latestDay, NUM_OF_TYPES, NUM_OF_BRANDS);
 	mostProfitableDay();
